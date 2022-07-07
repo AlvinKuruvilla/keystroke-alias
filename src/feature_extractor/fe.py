@@ -13,12 +13,12 @@ from .kit import (
 # FIXME:Where is get_word_features
 from .word_level import get_advanced_word_features
 
-
+# FIXME We have to get the F3 and F4 features but currently they cause a crash
 def get_all_users_features_KIT(directory):
     users_feat_dict_f1 = {}
     users_feat_dict_f2 = {}
-    users_feat_dict_f3 = {}
-    users_feat_dict_f4 = {}
+    # users_feat_dict_f3 = {}
+    # users_feat_dict_f4 = {}
     user_files = os.listdir(directory)
     for i in tqdm(range(len(user_files))):
         user_file = user_files[i]
@@ -32,17 +32,17 @@ def get_all_users_features_KIT(directory):
         user_feat_dict_f2 = get_KIT_features_F2(user_data)
         users_feat_dict_f2[i + 1] = user_feat_dict_f2
 
-        user_feat_dict_f3 = get_KIT_features_F1_from_file(user_data)
-        users_feat_dict_f3[i + 1] = user_feat_dict_f3
+        # user_feat_dict_f3 = get_KIT_features_F1_from_file(user_data)
+        # users_feat_dict_f3[i + 1] = user_feat_dict_f3
 
-        user_feat_dict_f4 = get_KIT_features_F4(user_data)
-        users_feat_dict_f4[i + 1] = user_feat_dict_f4
+        # user_feat_dict_f4 = get_KIT_features_F4(user_data)
+        # users_feat_dict_f4[i + 1] = user_feat_dict_f4
 
     return (
         users_feat_dict_f1,
         users_feat_dict_f2,
-        users_feat_dict_f3,
-        users_feat_dict_f4,
+        # users_feat_dict_f3,
+        # users_feat_dict_f4,
     )
 
 
