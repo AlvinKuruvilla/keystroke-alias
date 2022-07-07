@@ -28,7 +28,7 @@ class KM_Parser:
         df = pd.read_csv(km_file_path)
         bbmas_file_path = self.get_bbmas_file_path(km_file_path)
         print(bbmas_file_path)
-        input()
+        # input()
         with open(self.get_bbmas_file_path(km_file_path), "w+") as f:
             rows = zip(
                 KM_Parser.make_id_column(df),
@@ -74,7 +74,9 @@ class KM_Parser:
 
 if __name__ == "__main__":
     parser = KM_Parser()
-    df = pd.read_csv("/Users/alvinkuruvilla/Dev/typing-data-extractor/testdata/456.csv")
+    df = pd.read_csv(
+        "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/data/km/test.csv"
+    )
     parser.create_bbmas_file(
-        "/Users/alvinkuruvilla/Dev/typing-data-extractor/testdata/456.csv"
+        "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/data/km/test.csv"
     )

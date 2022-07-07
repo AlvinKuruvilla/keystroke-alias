@@ -1,1 +1,3 @@
-testdata/
+data/
+gen/
+*__pycache__/
