@@ -2,6 +2,7 @@ import os
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
+from .kht import get_KHT_features
 from .kit import (
     get_KIT_features_F1_from_file,
     get_dataframe_KIT,
@@ -44,6 +45,20 @@ def get_all_users_features_KIT(directory):
         # users_feat_dict_f3,
         # users_feat_dict_f4,
     )
+
+
+def get_all_users_features_KHT(directory):
+    users_feat_dict = {}
+
+    user_files = os.listdir(directory)
+    for i in tqdm(range(len(user_files))):
+        user_file = user_files[i]
+        data_frame = pd.read_csv(directory + user_file)
+        user_data = data_frame.values
+        user_feat_dict = get_KHT_features(user_data)
+        users_feat_dict[i + 1] = user_feat_dict
+
+    return users_feat_dict
 
 
 def get_all_users_features_word(directory):
