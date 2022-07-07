@@ -3,3 +3,5 @@ numpy
 sklearn
 skfeature-chappers
 xgboost
+imblearn
+tqdm
