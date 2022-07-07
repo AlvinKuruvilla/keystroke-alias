@@ -1,6 +1,6 @@
 import os
 import pickle
-from feature_extractor.fe import (
+from features.fe import (
     get_all_users_features_KHT,
     get_all_users_features_KIT,
     get_all_users_features_advanced_word,
