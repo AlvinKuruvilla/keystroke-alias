@@ -718,3 +718,8 @@ def get_desktop_features():
         ),
         axis=1,
     )
+
+
+def get_combined_features():
+    desktop_features_combined = get_desktop_features()
+    return np.concatenate((np.array(desktop_features_combined),), axis=1)

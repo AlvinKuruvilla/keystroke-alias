@@ -5,3 +5,4 @@ skfeature-chappers
 xgboost
 imblearn
 tqdm
+torch
