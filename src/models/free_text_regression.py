@@ -27,8 +27,8 @@ def regression_results(problem, feature_type, model):
     # print(val_score)
 
 
-class_problems = ["Age", "Height"]
-models = ["SVM", "KNN", "XGBoost"]
+class_problems = ["Height"]
+models = ["XGBoost"]
 
 for model in models:
     print(
@@ -39,7 +39,6 @@ for model in models:
         print(class_problem)
         print("Desktop")
         regression_results(class_problem, get_desktop_features(), model)
-        print("Phone")
         print()
         print(
             "-----------------------------------------------------------------------------------------"

@@ -37,4 +37,5 @@ class RNN_Net(nn.Module):
 
 
 x = torch.randn((10, 3, 547)).cuda()
+# FIXME: AssertionError: Torch not compiled with CUDA enabled
 RNN_Net(10, 547, 10, 2).cuda().forward(x)

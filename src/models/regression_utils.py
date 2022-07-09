@@ -151,3 +151,44 @@ def compare_regression(label_name, feature_type, top_n_features, model):
 
         y_true, y_pred = y_test, clf.predict(X_test)
         return mean_absolute_error(y_true, y_pred), clf.best_params_, clf.cv_results_
+
+
+def regression_results(problem, feature_type, model):
+    num_features = []
+    mae = []
+    hyper = []
+    val_score = []
+    for i in range(5, 105, 5):
+        res, setup, val = compare_regression(problem, feature_type, i, model)
+        num_features.append(i)
+        mae.append(res)
+        hyper.append(setup)
+        val_score.append(val)
+    print(num_features)
+    print(mae)
+    print(hyper)
+    # print(val_score)
+
+
+class_problems = ["Age", "Height"]
+models = ["SVM", "KNN", "XGBoost"]
+
+for model in models:
+    print(
+        "###########################################################################################"
+    )
+    print(model)
+    for class_problem in class_problems:
+        print(class_problem)
+        print("Desktop")
+        regression_results(class_problem, get_desktop_features(), model)
+        print("Phone")
+        regression_results(class_problem, get_phone_features(), model)
+        print("Tablet")
+        regression_results(class_problem, get_tablet_features(), model)
+        print("Combined")
+        regression_results(class_problem, get_combined_features(), model)
+        print()
+        print(
+            "-----------------------------------------------------------------------------------------"
+        )
