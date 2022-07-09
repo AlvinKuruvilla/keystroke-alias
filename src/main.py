@@ -10,7 +10,6 @@ from features.fe import (
     get_all_users_features_KIT,
     get_all_users_features_advanced_word,
 )
-from features.feature_lists import get_desktop_features
 
 if __name__ == "__main__":
     dir_name = "data"
