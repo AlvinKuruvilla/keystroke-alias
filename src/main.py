@@ -41,3 +41,11 @@ if __name__ == "__main__":
     pickle.dump(
         desktop_kht_features, open("desktop_kht_feature_dictionary.pickle", "wb")
     )
+    desktop_advanced_word_features = get_all_users_features_advanced_word(
+        selected_profile_path
+    )
+
+    pickle.dump(
+        desktop_advanced_word_features,
+        open("desktop_advanced_word_feature_dictionary.pickle", "wb"),
+    )
