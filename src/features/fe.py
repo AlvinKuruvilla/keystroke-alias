@@ -11,7 +11,6 @@ from .kit import (
     get_KIT_features_F4,
 )
 
-# FIXME:Where is get_word_features
 from .word_level import get_advanced_word_features
 
 

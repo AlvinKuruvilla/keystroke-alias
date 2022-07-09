@@ -4,9 +4,7 @@ import torch
 import torch.nn as nn
 from torch.autograd import Variable
 from sklearn.model_selection import StratifiedKFold
-
-from models.model_util import get_train_test_splits
-from models.rnn import RNN_Net
+from models.rnn import RNN_Net, get_train_test_splits
 
 # Gender classification
 seed = 1
@@ -162,4 +160,5 @@ def train_model(label_type):
                     )
 
 
+# ValueError: all the input arrays must have same number of dimensions, but the array at index 0 has 2 dimension(s) and the array at index 1 has 1 dimension(s)
 train_model("Gender")
