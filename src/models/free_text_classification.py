@@ -27,19 +27,20 @@ def classification_results(problem, feature_type, model):
     # print(val_score)
 
 
-class_problems = ["Gender", "Typing Style", "Major/Minor"]
-models = ["NB", "ABoost", "SVM", "DTree", "XGBoost", "MLP"]
+def run_free_text_xgboost_gender_ml_model():
+    class_problems = ["Gender"]
+    models = ["XGBoost"]
 
-for model in models:
-    print(
-        "###########################################################################################"
-    )
-    print(model)
-    for class_problem in class_problems:
-        print(class_problem)
-        print("Desktop")
-        classification_results(class_problem, get_desktop_features(), model)
-        print()
+    for model in models:
         print(
-            "-----------------------------------------------------------------------------------------"
+            "###########################################################################################"
         )
+        print(model)
+        for class_problem in class_problems:
+            print(class_problem)
+            print("Desktop")
+            classification_results(class_problem, get_desktop_features(), model)
+            print()
+            print(
+                "-----------------------------------------------------------------------------------------"
+            )

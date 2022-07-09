@@ -696,12 +696,12 @@ def get_desktop_features():
         "desktop_kit_feature_f2_dictionary.pickle", feature_list_Desktop_KIT_2
     )
     # TODO: The pickle files for F3 and F4 are not generating properly yet
-    # desktop_features_KIT_3 = top_feature_KIT(
-    #     "desktop_kit_feature_f3_dictionary.pickle", feature_list_Desktop_KIT_3
-    # )
-    # desktop_features_KIT_4 = top_feature_KIT(
-    #     "desktop_kit_feature_f4_dictionary.pickle", feature_list_Desktop_KIT_4
-    # )
+    desktop_features_KIT_3 = top_feature_KIT(
+        "desktop_kit_feature_f3_dictionary.pickle", feature_list_Desktop_KIT_3
+    )
+    desktop_features_KIT_4 = top_feature_KIT(
+        "desktop_kit_feature_f4_dictionary.pickle", feature_list_Desktop_KIT_4
+    )
 
     desktop_features_advanced = top_feature_advanced_word(
         "desktop_advanced_word_feature_dictionary.pickle",
@@ -713,8 +713,8 @@ def get_desktop_features():
             np.array(desktop_features_advanced),
             np.array(desktop_features_KIT_1),
             np.array(desktop_features_KIT_2),
-            # np.array(desktop_features_KIT_3),
-            # np.array(desktop_features_KIT_4),
+            np.array(desktop_features_KIT_3),
+            np.array(desktop_features_KIT_4),
         ),
         axis=1,
     )

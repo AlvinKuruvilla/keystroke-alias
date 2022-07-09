@@ -2,6 +2,8 @@ import os
 import pickle
 from rich.traceback import install
 
+from models.free_text_classification import run_free_text_xgboost_gender_ml_model
+
 install()
 from features.fe import (
     get_all_users_features_KHT,
@@ -49,3 +51,5 @@ if __name__ == "__main__":
         desktop_advanced_word_features,
         open("desktop_advanced_word_feature_dictionary.pickle", "wb"),
     )
+    # FIXME: ValueError: all the input arrays must have same number of dimensions, but the array at index 0 has 2 dimension(s) and the array at index 1 has 1 dimension(s)
+    run_free_text_xgboost_gender_ml_model()
