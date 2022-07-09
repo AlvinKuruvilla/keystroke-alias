@@ -52,4 +52,5 @@ if __name__ == "__main__":
         desktop_advanced_word_features,
         open("desktop_advanced_word_feature_dictionary.pickle", "wb"),
     )
-    train_model("Gender")
+    run_age_xgb_regression()
+    # train_model("Gender")
