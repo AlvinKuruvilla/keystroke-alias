@@ -161,4 +161,4 @@ def train_model(label_type):
 
 
 # ValueError: all the input arrays must have same number of dimensions, but the array at index 0 has 2 dimension(s) and the array at index 1 has 1 dimension(s)
-train_model("Gender")
+# train_model("Gender")

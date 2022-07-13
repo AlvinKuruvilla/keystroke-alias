@@ -703,14 +703,14 @@ def get_desktop_features():
         "desktop_kit_feature_f4_dictionary.pickle", feature_list_Desktop_KIT_4
     )
 
-    desktop_features_advanced = top_feature_advanced_word(
-        "desktop_advanced_word_feature_dictionary.pickle",
-        feature_dict_advanced_word_Desktop,
-    )
+    # desktop_features_advanced = top_feature_advanced_word(
+    #     "desktop_advanced_word_feature_dictionary.pickle",
+    #     feature_dict_advanced_word_Desktop,
+    # )
     return np.concatenate(
         (
             np.array(desktop_features_KHT),
-            np.array(desktop_features_advanced),
+            # np.array(desktop_features_advanced),
             np.array(desktop_features_KIT_1),
             np.array(desktop_features_KIT_2),
             np.array(desktop_features_KIT_3),
