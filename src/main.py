@@ -14,11 +14,11 @@ from features.fe import (
 )
 
 if __name__ == "__main__":
-    dir_name = "data"
+    dir_name = "gen"
     dir_path = os.path.join(os.getcwd(), dir_name)
-    for file in os.listdir(os.path.join(dir_path, "Desktop/")):
+    for file in os.listdir(os.path.join(dir_path, "km/")):
         print(file)
-    selected_profile_path = os.path.join(dir_path, "Desktop/")
+    selected_profile_path = os.path.join(dir_path, "km/")
     (
         desktop_kit_features_f1,
         desktop_kit_features_f2,
@@ -44,13 +44,13 @@ if __name__ == "__main__":
     pickle.dump(
         desktop_kht_features, open("desktop_kht_feature_dictionary.pickle", "wb")
     )
-    # desktop_advanced_word_features = get_all_users_features_advanced_word(
-    #     selected_profile_path
-    # )
+    desktop_advanced_word_features = get_all_users_features_advanced_word(
+        selected_profile_path
+    )
 
-    # pickle.dump(
-    #     desktop_advanced_word_features,
-    #     open("desktop_advanced_word_feature_dictionary.pickle", "wb"),
-    # )
-    run_age_xgb_regression()
+    pickle.dump(
+        desktop_advanced_word_features,
+        open("desktop_advanced_word_feature_dictionary.pickle", "wb"),
+    )
+    # run_age_xgb_regression()
     # train_model("Gender")

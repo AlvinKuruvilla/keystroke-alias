@@ -4,7 +4,7 @@ from sklearn import preprocessing
 from sklearn.feature_selection import SelectKBest, mutual_info_classif
 from sklearn.metrics import mean_absolute_error
 from sklearn.model_selection import GridSearchCV, train_test_split
-from xgboost import XGBRegressor
+from sklearn.ensemble import RandomForestClassifier
 from features.feature_lists import get_combined_features, get_desktop_features
 
 
@@ -54,7 +54,7 @@ def compare_regression(label_name, feature_type, top_n_features, model):
         }
 
         clf = GridSearchCV(
-            XGBRegressor(),
+            RandomForestClassifier(),
             tuned_parameters,
             scoring="neg_mean_absolute_error",
             return_train_score=True,
@@ -72,6 +72,10 @@ def regression_results(problem, feature_type, model):
     hyper = []
     val_score = []
     for i in range(5, 105, 5):
+        print("Problem", problem)
+        print("Feature Type", feature_type)
+        print("Index", i)
+        print("Model", model)
         res, setup, val = compare_regression(problem, feature_type, i, model)
         num_features.append(i)
         mae.append(res)
