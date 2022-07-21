@@ -40,10 +40,20 @@ class KM_Parser:
             for row in rows:
                 writer.writerow(row)
 
+    def create_bbmas_from_directory(self):
+        p = os.path.join(os.getcwd(), "data", "km")
+        onlyfiles = [f for f in os.listdir(p) if os.path.isfile(os.path.join(p, f))]
+        for file in onlyfiles:
+            path = os.path.join(os.getcwd(), p, file)
+            self.create_bbmas_file(path)
+
     @staticmethod
     def get_action_column(df: pd.DataFrame):
         new_actions = []
-        actions = df["Press or Release"].tolist()
+        try:
+            actions = df["Press or Release"].tolist()
+        except KeyError:
+            actions = df.iloc[:, 0]
         for action in actions:
             if action == "P":
                 new_actions.append("0")
@@ -53,12 +63,18 @@ class KM_Parser:
 
     @staticmethod
     def get_key_column(df: pd.DataFrame):
-        keys = df["Key"].tolist()
+        try:
+            keys = df["Key"].tolist()
+        except KeyError:
+            keys = df.iloc[:, 1]
         return keys
 
     @staticmethod
     def get_time_column(df: pd.DataFrame):
-        times = df["Time"].tolist()
+        try:
+            times = df["Time"].tolist()
+        except KeyError:
+            times = df.iloc[:, 2]
         return times
 
     @staticmethod
@@ -74,9 +90,17 @@ class KM_Parser:
 
 if __name__ == "__main__":
     parser = KM_Parser()
-    df = pd.read_csv(
-        "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/data/km/test.csv"
-    )
-    parser.create_bbmas_file(
-        "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/data/km/test.csv"
-    )
+    # df = pd.read_csv(
+    #     "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/data/km/test.csv"
+    # )
+    p = os.path.join(os.getcwd(), "data", "km")
+    onlyfiles = [f for f in os.listdir(p) if os.path.isfile(os.path.join(p, f))]
+    for f in onlyfiles:
+        try:
+            parser.create_bbmas_file(
+                "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/data/km/"
+                + f
+            )
+        except UnicodeDecodeError:
+            print("ERROR ON", f)
+            pass
