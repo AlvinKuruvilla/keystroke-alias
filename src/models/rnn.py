@@ -73,8 +73,10 @@ def get_train_test_splits(label_name):
     np.random.seed(0)
     X_matrix_new = X_matrix
 
-    print(X_matrix_new.shape)
-    X_matrix_new, Y_vector = SMOTE(kind="svm").fit_sample(X_matrix_new, Y_vector)
+    print(X_matrix_new)
+    # NOTE: It looks like the "kind" argument has been removed from SMOTE
+    # NOTE: It looks like if  SMOTE is imported like how we did it we need to change fit_sample to fit_resample
+    X_matrix_new, Y_vector = SMOTE().fit_resample(X_matrix_new, Y_vector)
     return X_matrix_new, Y_vector
 
 

@@ -101,9 +101,6 @@ def run_age_xgb_regression():
             print(class_problem)
             print("Desktop")
             regression_results(class_problem, get_desktop_features(), model)
-            print("Combined")
-            regression_results(class_problem, get_combined_features(), model)
-            print()
             print(
                 "-----------------------------------------------------------------------------------------"
             )

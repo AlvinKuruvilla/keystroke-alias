@@ -686,22 +686,33 @@ def get_advanced_word_features(device):
 
 # return all the desktop features for free text
 def get_desktop_features():
+    # This function call returns an array of all zeros for some reason... maybe this is why we keep getting issues
     desktop_features_KHT = top_feature_KIT(
         "desktop_kht_feature_dictionary.pickle", feature_list_Desktop_KHT
     )
+    print(desktop_features_KHT)
+    input("DESKTOP FEATURES KHT")
     desktop_features_KIT_1 = top_feature_KIT(
         "desktop_kit_feature_f1_dictionary.pickle", feature_list_Desktop_KIT_1
     )
+    print(desktop_features_KIT_1)
+    input("DESKTOP FEATURES KIT 1")
     desktop_features_KIT_2 = top_feature_KIT(
         "desktop_kit_feature_f2_dictionary.pickle", feature_list_Desktop_KIT_2
     )
+    print(desktop_features_KIT_2)
+    input("DESKTOP FEATURES KIT 2")
     # TODO: The pickle files for F3 and F4 are not generating properly yet
     desktop_features_KIT_3 = top_feature_KIT(
         "desktop_kit_feature_f3_dictionary.pickle", feature_list_Desktop_KIT_3
     )
+    print(desktop_features_KIT_3)
+    input("DESKTOP FEATURES KIT 3")
     desktop_features_KIT_4 = top_feature_KIT(
         "desktop_kit_feature_f4_dictionary.pickle", feature_list_Desktop_KIT_4
     )
+    print(desktop_features_KIT_4)
+    input("DESKTOP FEATURES KIT 4")
 
     # desktop_features_advanced = top_feature_advanced_word(
     #     "desktop_advanced_word_feature_dictionary.pickle",

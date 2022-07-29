@@ -20,7 +20,12 @@ def weights_init(layer):
 
 
 def train_model(label_type):
+    print("Label type: " + label_type)
     X_matrix_new, Y_vector = get_train_test_splits(label_type)
+    print(X_matrix_new)
+    input("X Matrix")
+    print(Y_vector)
+    input("Y Vector")
     X_matrix_new = np.resize(X_matrix_new, (X_matrix_new.shape[0], 3, 547))
 
     X_train, X_test, Y_train, Y_test = train_test_split(
@@ -41,8 +46,8 @@ def train_model(label_type):
         scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, "max")
         loss_func = nn.CrossEntropyLoss()
 
-        fcn.cuda()
-        loss_func.cuda()
+        fcn
+        loss_func
 
         train_tensor_x = torch.Tensor(X_train)
         train_tensor_y = torch.Tensor(Y_train)
@@ -69,8 +74,6 @@ def train_model(label_type):
         for epoch in range(10):
             for itr, (x, y) in enumerate(train_dataloader):
                 fcn.train()
-                x = x.cuda()
-                y = y.cuda()
 
                 # print(x.shape)
 
@@ -108,8 +111,6 @@ def train_model(label_type):
                     test_total = 0
 
                     for (x, y) in train_dataloader:
-                        x = x.cuda()
-                        y = y.cuda()
 
                         if x.shape[0] != 10:
                             continue
@@ -120,9 +121,6 @@ def train_model(label_type):
                         train_correct += (y == predicted).sum().item()
 
                     for (x, y) in val_dataloader:
-                        x = x.cuda()
-                        y = y.cuda()
-
                         if x.shape[0] != 10:
                             continue
 
@@ -132,8 +130,6 @@ def train_model(label_type):
                         val_correct += (y == predicted).sum().item()
 
                     for (x, y) in test_dataloader:
-                        x = x.cuda()
-                        y = y.cuda()
 
                         if x.shape[0] != 10:
                             continue
