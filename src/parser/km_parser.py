@@ -29,7 +29,7 @@ class KM_Parser:
         bbmas_file_path = self.get_bbmas_file_path(km_file_path)
         print(bbmas_file_path)
         # input()
-        with open(self.get_bbmas_file_path(km_file_path), "w+") as f:
+        with open(self.get_bbmas_file_path(km_file_path), "w+", encoding="utf-8") as f:
             rows = zip(
                 KM_Parser.make_id_column(df),
                 KM_Parser.get_key_column(df),
