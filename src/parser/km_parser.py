@@ -36,9 +36,10 @@ class KM_Parser:
                 KM_Parser.get_action_column(df),
                 KM_Parser.get_time_column(df),
             )
-            writer = csv.writer(f)
-            for row in rows:
-                writer.writerow(row)
+            writer = csv.writer(f, quoting=csv.QUOTE_NONE, escapechar=" ")
+            header = ["EID," "key," "direction," "time"]
+            writer.writerow(header)
+            writer.writerows(rows)
 
     def create_bbmas_from_directory(self):
         p = os.path.join(os.getcwd(), "data", "km")
