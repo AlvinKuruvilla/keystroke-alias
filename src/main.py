@@ -26,6 +26,8 @@ if __name__ == "__main__":
         desktop_kit_features_f4,
     ) = get_all_users_features_KIT(selected_profile_path)
 
+    print(get_all_users_features_KIT(selected_profile_path))
+    input()
     pickle.dump(
         desktop_kit_features_f1, open("desktop_kit_feature_f1_dictionary.pickle", "wb")
     )
@@ -40,6 +42,8 @@ if __name__ == "__main__":
     )
 
     desktop_kht_features = get_all_users_features_KHT(selected_profile_path)
+    print(get_all_users_features_KHT(selected_profile_path))
+    input()
 
     pickle.dump(
         desktop_kht_features, open("desktop_kht_feature_dictionary.pickle", "wb")
