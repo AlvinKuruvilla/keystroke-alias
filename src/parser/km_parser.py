@@ -2,7 +2,13 @@ import os
 import csv
 import pandas as pd
 
-from parser_util import path_leaf
+import ntpath
+
+
+def path_leaf(path: str):
+    """An OS agnostic function to extract the filename from a path"""
+    head, tail = ntpath.split(path)
+    return tail or ntpath.basename(head)
 
 
 class KM_Parser:
