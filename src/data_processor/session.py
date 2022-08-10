@@ -79,7 +79,7 @@ def generate_all_session():
 if __name__ == "__main__":
     p = os.path.join(os.getcwd(), "gen", "km")
     i = 0
-    file = os.path.join(p, "f_23_fpd1.csv")
+    file = os.path.join(p, "f_24_fpd1.csv")
     data = find_escape_sequence(os.path.join(p, file))
     input(data)
     sess_count = len(find_escape_sequence(os.path.join(p, file)))
@@ -105,3 +105,5 @@ if __name__ == "__main__":
                 writer.writerow(header)
                 writer.writerows(flatten(data[i]))
             i += 1
+    else:
+        print("Could not make sessions for file " + file)
