@@ -1,7 +1,13 @@
 import os
 import csv
+from re import L
 from tqdm import tqdm
 from typing import List
+
+
+def flatten(xss):
+    """Given a list with 1 or more arrays of arrays, flatten them to a single array"""
+    return [x for xs in xss for x in xs]
 
 
 def find_first_index_of(key: str, data: List[str]):
@@ -36,7 +42,7 @@ def find_escape_sequence(path: str):
             session = [lines[: ctrl_pos + c_pos + 1]]
             # print(session)
             # input()
-            session_data.append(session)
+            session_data.append([session])
             lines = lines[ctrl_pos + c_pos + 1 :]
             if abs(current_ctrl_pos - ctrl_pos) > 10:
                 session_count += 1
@@ -44,7 +50,7 @@ def find_escape_sequence(path: str):
     return session_data
 
 
-if __name__ == "__main__":
+def generate_all_session():
     p = os.path.join(os.getcwd(), "gen", "km")
     onlyfiles = [f for f in os.listdir(p) if os.path.isfile(os.path.join(p, f))]
     i = 0
@@ -54,16 +60,48 @@ if __name__ == "__main__":
         # for session in sess_count:
         #     data[session]
         dir_name = os.path.splitext(file)[0]
-        dir_path = os.path.join(os.getcwd(), "sessions", dir_name)
+        dir_path = os.path.join(os.getcwd(), "test", dir_name)
         if sess_count == 6:
+            print(file)
             if not os.path.exists(dir_path):
                 os.makedirs(dir_path)
             while i < sess_count:
-                with open(os.path.join(dir_path, file + ".csv"), "w+") as f:
+                with open(
+                    os.path.join(dir_path, file + str(i + 1) + ".csv"), "w+"
+                ) as f:
                     writer = csv.writer(f)
                     header = ["EID," "key," "direction," "time"]
                     writer.writerow(header)
-                    writer.writerows(data[i])
+                    writer.writerows(flatten(data[i]))
                 i += 1
 
-        # input("File FINISHED\n" + file)
+
+if __name__ == "__main__":
+    p = os.path.join(os.getcwd(), "gen", "km")
+    i = 0
+    file = os.path.join(p, "f_23_fpd1.csv")
+    data = find_escape_sequence(os.path.join(p, file))
+    input(data)
+    sess_count = len(find_escape_sequence(os.path.join(p, file)))
+    dir_name = os.path.splitext(file)[0]
+    dir_path = os.path.join(os.getcwd(), "test", dir_name)
+    if sess_count == 6:
+        print(file)
+        while i < sess_count:
+            with open(
+                os.path.join(
+                    dir_path,
+                    file.split("_")[0]
+                    + "_"
+                    + file.split("_")[1]
+                    + "_"
+                    + str(i + 1)
+                    + ".csv",
+                ),
+                "w+",
+            ) as f:
+                writer = csv.writer(f)
+                header = ["EID," "key," "direction," "time"]
+                writer.writerow(header)
+                writer.writerows(flatten(data[i]))
+            i += 1
