@@ -79,10 +79,10 @@ def generate_all_session():
 if __name__ == "__main__":
     p = os.path.join(os.getcwd(), "gen", "km")
     i = 0
-    file = os.path.join(p, "f_24_fpd1.csv")
+    file = os.path.join(p, "f_3456_fpd1.csv")
     data = find_escape_sequence(os.path.join(p, file))
-    input(data)
     sess_count = len(find_escape_sequence(os.path.join(p, file)))
+    print("Sess count: %d" % sess_count)
     dir_name = os.path.splitext(file)[0]
     dir_path = os.path.join(os.getcwd(), "test", dir_name)
     if sess_count == 6:
