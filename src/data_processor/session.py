@@ -79,7 +79,7 @@ def generate_all_session():
 if __name__ == "__main__":
     p = os.path.join(os.getcwd(), "gen", "km")
     i = 0
-    file = os.path.join(p, "t_3456_fpd1.csv")
+    file = os.path.join(p, "f_01_fpd1.csv")
     data = find_escape_sequence(os.path.join(p, file))
     sess_count = len(find_escape_sequence(os.path.join(p, file)))
     print("Sess count: %d" % sess_count)
