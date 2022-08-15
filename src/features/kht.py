@@ -25,10 +25,10 @@ def get_KHT_features(data):
     keys_in_pipeline = []
 
     for row_idx in range(len(data)):
-        keys_in_pipeline = list(keys_in_pipeline)
-        curr_key = data[row_idx][1]
-        curr_direction = data[row_idx][2]
-        curr_timing = data[row_idx][3]
+        keys_in_pipeline = list(data)
+        curr_key = data[row_idx][0]
+        curr_direction = data[row_idx][1]
+        curr_timing = data[row_idx][2]
 
         if curr_direction == 0:
             keys_in_pipeline.append([curr_key, curr_timing])

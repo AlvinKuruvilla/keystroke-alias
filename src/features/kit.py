@@ -2,10 +2,28 @@ import pandas as pd
 import numpy as np
 
 
+def event_to_int(event: str) -> int:
+    if event == "P":
+        return 1
+    elif event == "R":
+        return 0
+
+
+# Make sure that the direction of the event is an integer rather than "P" or "R"
+def conform_to_int(data):
+    result = []
+    for row_idx in data:
+        result.append([event_to_int(row_idx[0]), row_idx[1], row_idx[2]])
+    return result
+
+
 def get_timings_KIT(keys_in_pipeline, search_key, search_key_timing):
     mask = np.ones(len(keys_in_pipeline))
     keys_in_pipeline = np.asarray(keys_in_pipeline)
-    for i, (key, timing) in enumerate(keys_in_pipeline):
+    for row in keys_in_pipeline:
+        i = int(row[0])
+        key = row[1]
+        timing = row[2]
         if search_key == key:
             mask[i] = 0
             non_zero_indices = np.nonzero(mask)
@@ -26,17 +44,19 @@ def get_dataframe_KIT(data):
     press = []
     release = []
     for row_idx in range(len(data)):
-        keys_in_pipeline = list(keys_in_pipeline)
+        keys_in_pipeline = list(data)
+        # print("Keys in pipeline: ", keys_in_pipeline)
         curr_key = data[row_idx][1]
-        curr_direction = data[row_idx][2]
-        curr_timing = data[row_idx][3]
-
+        curr_direction = event_to_int(data[row_idx][0])
+        # print("Key direction: ", curr_direction)
+        curr_timing = data[row_idx][2]
         if curr_direction == 0:
             keys_in_pipeline.append([curr_key, curr_timing])
 
         if curr_direction == 1:
+            # print("Pipeline Keys:", conform_to_int(keys_in_pipeline))
             keys_in_pipeline, curr_start, curr_end = get_timings_KIT(
-                keys_in_pipeline, curr_key, curr_timing
+                conform_to_int(keys_in_pipeline), curr_key, curr_timing
             )
             if curr_start is None:
                 continue
@@ -49,6 +69,7 @@ def get_dataframe_KIT(data):
         list(zip(result_key, press, release)),
         columns=["Key", "Press_Time", "Release_Time"],
     )
+    # print("Result:", resultant_data_frame)
     return resultant_data_frame
 
 

@@ -22,21 +22,25 @@ def get_all_users_features_KIT(directory):
     user_files = os.listdir(directory)
     for i in tqdm(range(len(user_files))):
         user_file = user_files[i]
-        data_frame = pd.read_csv(directory + user_file)
-        data_frame = get_dataframe_KIT(data_frame.values)
-        user_data = data_frame.values
+        if ".csv" in user_file and not user_file.startswith("."):
+            data_frame = pd.read_csv(directory + user_file)
+            # print("Read:", data_frame)
+            data_frame = get_dataframe_KIT(data_frame.values)
+            # print("DataFrame:", data_frame)
+            user_data = data_frame.values
+            # print("User Data:", user_data)
 
-        user_feat_dict_f1 = get_KIT_features_F1(user_data)
-        users_feat_dict_f1[i + 1] = user_feat_dict_f1
+            user_feat_dict_f1 = get_KIT_features_F1(user_data)
+            users_feat_dict_f1[i + 1] = user_feat_dict_f1
 
-        user_feat_dict_f2 = get_KIT_features_F2(user_data)
-        users_feat_dict_f2[i + 1] = user_feat_dict_f2
+            user_feat_dict_f2 = get_KIT_features_F2(user_data)
+            users_feat_dict_f2[i + 1] = user_feat_dict_f2
 
-        user_feat_dict_f3 = get_KIT_features_F3(user_data)
-        users_feat_dict_f3[i + 1] = user_feat_dict_f3
+            user_feat_dict_f3 = get_KIT_features_F3(user_data)
+            users_feat_dict_f3[i + 1] = user_feat_dict_f3
 
-        user_feat_dict_f4 = get_KIT_features_F4(user_data)
-        users_feat_dict_f4[i + 1] = user_feat_dict_f4
+            user_feat_dict_f4 = get_KIT_features_F4(user_data)
+            users_feat_dict_f4[i + 1] = user_feat_dict_f4
 
     return (
         users_feat_dict_f1,
@@ -52,10 +56,12 @@ def get_all_users_features_KHT(directory):
     user_files = os.listdir(directory)
     for i in tqdm(range(len(user_files))):
         user_file = user_files[i]
-        data_frame = pd.read_csv(directory + user_file)
-        user_data = data_frame.values
-        user_feat_dict = get_KHT_features(user_data)
-        users_feat_dict[i + 1] = user_feat_dict
+        if ".csv" in user_file and not user_file.startswith("."):
+            print(user_file)
+            data_frame = pd.read_csv(directory + user_file)
+            user_data = data_frame.values
+            user_feat_dict = get_KHT_features(user_data)
+            users_feat_dict[i + 1] = user_feat_dict
 
     return users_feat_dict
 

@@ -100,7 +100,7 @@ if __name__ == "__main__":
     # df = pd.read_csv(
     #     "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/data/km/test.csv"
     # )
-    p = os.path.join(os.getcwd(), "new")
+    p = os.path.join(os.getcwd(), "data", "km")
     onlyfiles = [f for f in os.listdir(p) if os.path.isfile(os.path.join(p, f))]
     for f in onlyfiles:
         try:
