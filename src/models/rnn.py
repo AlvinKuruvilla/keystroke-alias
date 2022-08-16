@@ -44,7 +44,14 @@ class RNN_Net(nn.Module):
 
 
 # Create the appropriate train-test splits for free text classification tasks to align with the ML models
-def get_train_test_splits(label_name):
+def get_train_test_splits(
+    label_name,
+    desktop_kit_features_f1,
+    desktop_kit_features_f2,
+    desktop_kit_features_f3,
+    desktop_kit_features_f4,
+    desktop_kht_features,
+):
     demographics_data_frame = pd.read_csv("Demographics.csv")
     Y_values = demographics_data_frame[label_name].to_numpy()
     Y_vector = np.asarray(Y_values)
@@ -61,7 +68,13 @@ def get_train_test_splits(label_name):
     Y_vector = Y_vector.astype("int")
 
     # uncomment one of the below four lines for the required feature set
-    X_matrix = get_combined_features()
+    X_matrix = get_combined_features(
+        desktop_kit_features_f1,
+        desktop_kit_features_f2,
+        desktop_kit_features_f3,
+        desktop_kit_features_f4,
+        desktop_kht_features,
+    )
     # X_matrix = get_desktop_features()
     # X_matrix = get_phone_features()
     # X_matrix = get_tablet_features()

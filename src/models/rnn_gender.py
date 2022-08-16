@@ -19,9 +19,23 @@ def weights_init(layer):
         nn.init.kaiming_uniform_(layer.weight.data)
 
 
-def train_model(label_type):
+def train_model(
+    label_type,
+    desktop_kit_features_f1,
+    desktop_kit_features_f2,
+    desktop_kit_features_f3,
+    desktop_kit_features_f4,
+    desktop_kht_features,
+):
     print("Label type: " + label_type)
-    X_matrix_new, Y_vector = get_train_test_splits(label_type)
+    X_matrix_new, Y_vector = get_train_test_splits(
+        label_type,
+        desktop_kit_features_f1,
+        desktop_kit_features_f2,
+        desktop_kit_features_f3,
+        desktop_kit_features_f4,
+        desktop_kht_features,
+    )
     print(X_matrix_new)
     input("X Matrix")
     print(Y_vector)
@@ -154,7 +168,3 @@ def train_model(label_type):
                         + ", Test Acc: "
                         + str(100 * test_correct / test_total)
                     )
-
-
-# ValueError: all the input arrays must have same number of dimensions, but the array at index 0 has 2 dimension(s) and the array at index 1 has 1 dimension(s)
-# train_model("Gender")

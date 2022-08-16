@@ -1,5 +1,4 @@
 import os
-import pickle
 from rich.traceback import install
 
 from models.regression_age_task import run_age_xgb_regression
@@ -10,7 +9,6 @@ install()
 from features.fe import (
     get_all_users_features_KHT,
     get_all_users_features_KIT,
-    get_all_users_features_advanced_word,
 )
 
 if __name__ == "__main__":
@@ -19,3 +17,24 @@ if __name__ == "__main__":
     selected_profile_path = os.path.join(dir_path)
     desktop_kht_features = get_all_users_features_KHT(selected_profile_path)
     print(desktop_kht_features)
+    (
+        desktop_kit_features_f1,
+        desktop_kit_features_f2,
+        desktop_kit_features_f3,
+        desktop_kit_features_f4,
+    ) = get_all_users_features_KIT(selected_profile_path)
+    run_age_xgb_regression(
+        desktop_kit_features_f1,
+        desktop_kit_features_f2,
+        desktop_kit_features_f3,
+        desktop_kit_features_f4,
+        desktop_kht_features,
+    )
+    # train_model(
+    #     "Gender",
+    #     desktop_kit_features_f1,
+    #     desktop_kit_features_f2,
+    #     desktop_kit_features_f3,
+    #     desktop_kit_features_f4,
+    #     desktop_kht_features,
+    # )
