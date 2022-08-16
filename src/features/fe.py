@@ -62,7 +62,6 @@ def get_all_users_features_KHT(directory):
             user_data = data_frame.values
             user_feat_dict = get_KHT_features(user_data)
             users_feat_dict[i + 1] = user_feat_dict
-
     return users_feat_dict
 
 

@@ -1,20 +1,7 @@
 import pandas as pd
 import numpy as np
 
-
-def event_to_int(event: str) -> int:
-    if event == "P":
-        return 1
-    elif event == "R":
-        return 0
-
-
-# Make sure that the direction of the event is an integer rather than "P" or "R"
-def conform_to_int(data):
-    result = []
-    for row_idx in data:
-        result.append([event_to_int(row_idx[0]), row_idx[1], row_idx[2]])
-    return result
+from .fe_util import conform_to_int, event_to_int
 
 
 def get_timings_KIT(keys_in_pipeline, search_key, search_key_timing):

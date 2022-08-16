@@ -87,7 +87,13 @@ def regression_results(problem, feature_type, model):
     # print(val_score)
 
 
-def run_age_xgb_regression():
+def run_age_xgb_regression(
+    desktop_kit_features_f1,
+    desktop_kit_features_f2,
+    desktop_kit_features_f3,
+    desktop_kit_features_f4,
+    desktop_kht_features,
+):
     class_problems = ["Age"]
 
     models = ["XGBoost"]
@@ -100,7 +106,17 @@ def run_age_xgb_regression():
         for class_problem in class_problems:
             print(class_problem)
             print("Desktop")
-            regression_results(class_problem, get_desktop_features(), model)
+            regression_results(
+                class_problem,
+                get_desktop_features(
+                    desktop_kit_features_f1,
+                    desktop_kit_features_f2,
+                    desktop_kit_features_f3,
+                    desktop_kit_features_f4,
+                    desktop_kht_features,
+                ),
+                model,
+            )
             print(
                 "-----------------------------------------------------------------------------------------"
             )

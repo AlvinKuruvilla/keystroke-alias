@@ -55,8 +55,8 @@ top_feature_KIT_Phone_F2 = ["BACKSPACEBACKSPACE"]
 top_feature_KIT_Phone_F4 = ["BACKSPACEBACKSPACE"]
 
 
-def top_feature_KIT(pickle_file, top_feature):
-    kit_feature_dictionary = pickle.load(open(pickle_file, "rb"))
+def top_feature_KIT(feature_dict, top_feature):
+    kit_feature_dictionary = feature_dict
     selected_top_feature = [[0 for x in range(len(top_feature))] for x in range(116)]
     for key1 in kit_feature_dictionary:
         if key1 == 117:
