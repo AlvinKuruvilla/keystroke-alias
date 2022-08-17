@@ -1,4 +1,5 @@
 import numpy as np
+import pickle
 
 # Remove outlier points in the distribution using the 1.5IQR rule
 def remove_outliers(x):
@@ -27,3 +28,22 @@ def conform_to_int(data):
     for row_idx in data:
         result.append([event_to_int(row_idx[0]), row_idx[1], row_idx[2]])
     return result
+
+
+def pickle_all_feature_data(
+    desktop_kit_features_f1,
+    desktop_kit_features_f2,
+    desktop_kit_features_f3,
+    desktop_kit_features_f4,
+    desktop_kht_features,
+):
+    with open("kht.pickle", "wb") as handle:
+        pickle.dump(desktop_kht_features, handle)
+    with open("kit_f1.pickle", "wb") as handle:
+        pickle.dump(desktop_kit_features_f1, handle)
+    with open("kit_f2.pickle", "wb") as handle:
+        pickle.dump(desktop_kit_features_f2, handle)
+    with open("kit_f3.pickle", "wb") as handle:
+        pickle.dump(desktop_kit_features_f3, handle)
+    with open("kit_f4.pickle", "wb") as handle:
+        pickle.dump(desktop_kit_features_f4, handle)
