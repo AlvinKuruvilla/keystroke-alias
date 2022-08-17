@@ -97,7 +97,8 @@ def run_age_xgb_regression(
     class_problems = ["Age"]
 
     models = ["XGBoost"]
-
+    print("IN MODEL:", len(desktop_kht_features))
+    input()
     for model in models:
         print(
             "###########################################################################################"

@@ -692,15 +692,15 @@ def get_desktop_features(
     desktop_kit_features_f4,
     desktop_kht_features,
 ):
-    print("KHT Length:", len(np.array(desktop_kht_features)))
+    print("KHT Length:", desktop_kht_features)
     input()
-    print("KIT 1 Length:", len(np.array(desktop_kit_features_f1)))
+    print("KIT 1 Length:", desktop_kit_features_f1)
     input()
-    print("KIT 2 Length:", len(np.array(desktop_kit_features_f2)))
+    print("KIT 2 Length:", desktop_kit_features_f2)
     input()
-    print("KIT 3 Length:", len(np.array(desktop_kit_features_f3)))
+    print("KIT 3 Length:", desktop_kit_features_f3)
     input()
-    print("KIT 4 Length:", len(np.array(desktop_kit_features_f4)))
+    print("KIT 4 Length:", desktop_kit_features_f4)
     input()
     return np.concatenate(
         (
