@@ -1,3 +1,4 @@
+from re import L
 import numpy as np
 import pickle
 
@@ -47,3 +48,9 @@ def pickle_all_feature_data(
         pickle.dump(desktop_kit_features_f3, handle)
     with open("kit_f4.pickle", "wb") as handle:
         pickle.dump(desktop_kit_features_f4, handle)
+
+
+def load_feature_file(feature_file_path: str):
+    with open(feature_file_path, "rb") as handle:
+        b = pickle.load(handle)
+    return b
