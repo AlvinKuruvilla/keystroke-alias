@@ -4,6 +4,7 @@ import torch
 import torch.nn as nn
 from torch.autograd import Variable
 from sklearn.model_selection import StratifiedKFold
+from features.fe_util import load_feature_file
 from models.rnn import RNN_Net, get_train_test_splits
 
 # Gender classification
@@ -19,15 +20,13 @@ def weights_init(layer):
         nn.init.kaiming_uniform_(layer.weight.data)
 
 
-def train_model(
-    label_type,
-    desktop_kit_features_f1,
-    desktop_kit_features_f2,
-    desktop_kit_features_f3,
-    desktop_kit_features_f4,
-    desktop_kht_features,
-):
+def train_model(label_type):
     print("Label type: " + label_type)
+    desktop_kht_features = load_feature_file("kht.pickle")
+    desktop_kit_features_f1 = load_feature_file("kit_f1.pickle")
+    desktop_kit_features_f2 = load_feature_file("kit_f2.pickle")
+    desktop_kit_features_f3 = load_feature_file("kit_f3.pickle")
+    desktop_kit_features_f4 = load_feature_file("kit_f4.pickle")
     X_matrix_new, Y_vector = get_train_test_splits(
         label_type,
         desktop_kit_features_f1,
@@ -48,8 +47,6 @@ def train_model(
     kf = StratifiedKFold(n_splits=3)
     kf.get_n_splits(X_train)
 
-    split_num = 0
-
     for train_index, val_index in kf.split(X_train, Y_train):
         X_train, X_val = X_matrix_new[train_index], X_matrix_new[val_index]
         Y_train, Y_val = Y_vector[train_index], Y_vector[val_index]
@@ -57,11 +54,7 @@ def train_model(
         fcn = RNN_Net(10, 547, 10, 2)
         fcn.apply(weights_init)
         optimizer = torch.optim.Adam(fcn.parameters(), lr=0.001)
-        scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, "max")
         loss_func = nn.CrossEntropyLoss()
-
-        fcn
-        loss_func
 
         train_tensor_x = torch.Tensor(X_train)
         train_tensor_y = torch.Tensor(Y_train)
@@ -98,9 +91,7 @@ def train_model(
                 loss = loss_func(outputs, y.long())
 
                 params = list(fcn.parameters())
-                l1_regularization, l2_regularization = torch.norm(
-                    params[0], 1
-                ), torch.norm(params[0], 2)
+                l1_regularization = torch.norm(params[0], 1), torch.norm(params[0], 2)
 
                 for param in params:
                     l1_regularization += torch.norm(param, 1)

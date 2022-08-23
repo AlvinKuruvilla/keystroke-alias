@@ -57,7 +57,7 @@ def get_train_test_splits(
     Y_vector = np.asarray(Y_values)
 
     if label_name == "Gender" or label_name == "Ethnicity":
-        for i in range(116):
+        for i in range(64):
             if Y_values[i] == "M" or Y_values[i] == "Asian":
                 Y_vector[i] = 1
             else:

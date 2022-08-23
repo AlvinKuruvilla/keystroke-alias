@@ -55,19 +55,32 @@ top_feature_KIT_Phone_F2 = ["BACKSPACEBACKSPACE"]
 top_feature_KIT_Phone_F4 = ["BACKSPACEBACKSPACE"]
 
 
-def top_feature_KIT(feature_dict, top_feature):
+def top_feature_KIT(feature_dict):
     kit_feature_dictionary = feature_dict
-    selected_top_feature = [[0 for x in range(len(top_feature))] for x in range(116)]
+    selected_top_feature = [
+        [0 for x in range(80)] for x in range(len(feature_dict.keys()))
+    ]
+    print(np.array(selected_top_feature).shape)
+    # input()
+    # for key1 in kit_feature_dictionary:
+    #     print(("LENGTH:", len(list(feature_dict.get(key1).keys()))))
     for key1 in kit_feature_dictionary:
-        if key1 == 117:
-            break
-        for i in range(len(top_feature)):
+        counter = 0
+        for i in list(feature_dict.get(key1).keys()):
+            print(i)
             for key2 in kit_feature_dictionary[key1]:
-                if str(top_feature[i]) == str(key2):
-                    selected_top_feature[key1 - 1][i] = np.median(
-                        kit_feature_dictionary[key1][key2]
-                    )
-                    break
+                if str(i) == str(key2):
+                    print("Key1:", key1)
+                    print("Counter:", counter)
+                    # TODO: Double check that this value is still correct removing test.csv and other test data may change the shape of the feature dictionaries
+                    if key1 <= 60:
+                        selected_top_feature[key1 - 1][counter] = np.median(
+                            kit_feature_dictionary[key1][key2]
+                        )
+                        counter += 1
+                        break
+    print(selected_top_feature)
+    input("REACH")
     return selected_top_feature
 
 

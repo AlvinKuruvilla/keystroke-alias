@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import xgboost as xgb
 from sklearn import preprocessing
 from sklearn.feature_selection import SelectKBest, mutual_info_classif
 from sklearn.metrics import mean_absolute_error
@@ -32,15 +33,16 @@ def compare_regression(label_name, feature_type, top_n_features, model):
     X_matrix = preprocessing.scale(X_matrix)
 
     np.random.seed(0)
-    X_matrix_new = SelectKBest(mutual_info_classif, k=top_n_features).fit_transform(
-        X_matrix, Y_vector
-    )
 
     # Split the dataset in two equal parts
     X_train, X_test, y_train, y_test = train_test_split(
-        X_matrix_new, Y_vector, test_size=0.3, random_state=0
+        X_matrix, Y_vector, test_size=0.3, random_state=0
     )
-    if model == "XGB":
+    print("X_train: ", X_train)
+    print("Y_train: ", y_train)
+    print("x_test:", X_test)
+    print("y_test:", y_test)
+    if model == "XGBoost":
         # Set the parameters by cross-validation
         tuned_parameters = {
             "objective": ["reg:linear"],
@@ -54,14 +56,19 @@ def compare_regression(label_name, feature_type, top_n_features, model):
         }
 
         clf = GridSearchCV(
-            RandomForestClassifier(),
+            xgb.XGBRegressor(),
             tuned_parameters,
             scoring="neg_mean_absolute_error",
             return_train_score=True,
         )
         clf.fit(X_train, y_train)
+        # TODO: Pickle classifier for BBMASS model here
 
         y_true, y_pred = y_test, clf.predict(X_test)
+        print("Mean absolute error:", mean_absolute_error(y_true, y_pred))
+        print("Best params", clf.best_params_)
+        print("Results", clf.cv_results_)
+        # input()
         return mean_absolute_error(y_true, y_pred), clf.best_params_, clf.cv_results_
 
 
@@ -87,18 +94,10 @@ def regression_results(problem, feature_type, model):
     # print(val_score)
 
 
-def run_age_xgb_regression(
-    desktop_kit_features_f1,
-    desktop_kit_features_f2,
-    desktop_kit_features_f3,
-    desktop_kit_features_f4,
-    desktop_kht_features,
-):
+def run_age_xgb_regression():
     class_problems = ["Age"]
 
     models = ["XGBoost"]
-    print("IN MODEL:", len(desktop_kht_features))
-    input()
     for model in models:
         print(
             "###########################################################################################"
@@ -109,13 +108,7 @@ def run_age_xgb_regression(
             print("Desktop")
             regression_results(
                 class_problem,
-                get_desktop_features(
-                    desktop_kit_features_f1,
-                    desktop_kit_features_f2,
-                    desktop_kit_features_f3,
-                    desktop_kit_features_f4,
-                    desktop_kht_features,
-                ),
+                get_desktop_features(),
                 model,
             )
             print(
