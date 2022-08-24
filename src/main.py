@@ -16,5 +16,6 @@ if __name__ == "__main__":
     dir_name = "data/"
     dir_path = os.path.join(os.getcwd(), dir_name, "km/")
     selected_profile_path = os.path.join(dir_path)
-    run_age_xgb_regression()
-    # train_model("Gender")
+
+    # run_age_xgb_regression()
+    train_model("Gender")

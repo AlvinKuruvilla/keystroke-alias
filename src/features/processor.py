@@ -70,17 +70,19 @@ def top_feature_KIT(feature_dict):
             print(i)
             for key2 in kit_feature_dictionary[key1]:
                 if str(i) == str(key2):
-                    print("Key1:", key1)
-                    print("Counter:", counter)
+                    # print("Key1:", key1)
+                    # print("Counter:", counter)
                     # TODO: Double check that this value is still correct removing test.csv and other test data may change the shape of the feature dictionaries
                     if key1 <= 60:
+                        print("Key1:", key1)
+                        print("Counter:", counter)
                         selected_top_feature[key1 - 1][counter] = np.median(
                             kit_feature_dictionary[key1][key2]
                         )
                         counter += 1
                         break
-    print(selected_top_feature)
-    input("REACH")
+    # print(selected_top_feature)
+    # input("REACH")
     return selected_top_feature
 
 

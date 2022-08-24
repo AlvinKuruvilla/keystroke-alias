@@ -22,8 +22,8 @@ def compare_regression(label_name, feature_type, top_n_features, model):
     Y_values = demographics_data_frame[label_name].to_numpy()
 
     Y_vector = np.asarray(Y_values)
-
-    Y_vector = Y_vector[:-1]
+    # NOTE Changed to -5 from -1
+    Y_vector = Y_vector[:-5]
     Y_vector = Y_vector.astype("int")
 
     X_matrix = feature_type
