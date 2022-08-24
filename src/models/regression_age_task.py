@@ -5,7 +5,6 @@ from sklearn import preprocessing
 from sklearn.feature_selection import SelectKBest, mutual_info_classif
 from sklearn.metrics import mean_absolute_error
 from sklearn.model_selection import GridSearchCV, train_test_split
-from sklearn.ensemble import RandomForestClassifier
 from features.feature_lists import get_combined_features, get_desktop_features
 
 
@@ -38,10 +37,10 @@ def compare_regression(label_name, feature_type, top_n_features, model):
     X_train, X_test, y_train, y_test = train_test_split(
         X_matrix, Y_vector, test_size=0.3, random_state=0
     )
-    print("X_train: ", X_train)
-    print("Y_train: ", y_train)
-    print("x_test:", X_test)
-    print("y_test:", y_test)
+    # print("X_train: ", X_train)
+    # print("Y_train: ", y_train)
+    # print("x_test:", X_test)
+    # print("y_test:", y_test)
     if model == "XGBoost":
         # Set the parameters by cross-validation
         tuned_parameters = {
@@ -56,7 +55,7 @@ def compare_regression(label_name, feature_type, top_n_features, model):
         }
 
         clf = GridSearchCV(
-            xgb.XGBRegressor(),
+            xgb.XGBRegressor(verbosity=0),
             tuned_parameters,
             scoring="neg_mean_absolute_error",
             return_train_score=True,
@@ -66,7 +65,7 @@ def compare_regression(label_name, feature_type, top_n_features, model):
 
         y_true, y_pred = y_test, clf.predict(X_test)
         print("Mean absolute error:", mean_absolute_error(y_true, y_pred))
-        print("Best params", clf.best_params_)
+        # print("Best params", clf.best_params_)
         print("Results", clf.cv_results_)
         # input()
         return mean_absolute_error(y_true, y_pred), clf.best_params_, clf.cv_results_
@@ -79,18 +78,18 @@ def regression_results(problem, feature_type, model):
     hyper = []
     val_score = []
     for i in range(5, 105, 5):
-        print("Problem", problem)
-        print("Feature Type", feature_type)
-        print("Index", i)
-        print("Model", model)
+        # print("Problem", problem)
+        # print("Feature Type", feature_type)
+        # print("Index", i)
+        # print("Model", model)
         res, setup, val = compare_regression(problem, feature_type, i, model)
         num_features.append(i)
         mae.append(res)
         hyper.append(setup)
         val_score.append(val)
-    print(num_features)
-    print(mae)
-    print(hyper)
+    print("Features:", num_features)
+    print("MAE:", mae)
+    print("Hyper:", hyper)
     # print(val_score)
 
 
