@@ -1,6 +1,5 @@
 from tqdm import tqdm
 import numpy as np
-import pickle
 
 
 def get_features(features):
@@ -29,30 +28,6 @@ def get_features(features):
                 else:
                     feature_vector[(key1) - 1][j] = 0
     return feature_vector
-
-
-top_feature_KIT_Desktop_F1 = [
-    "in",
-    "nSPACE",
-    "et",
-    "lSPACE",
-    "oSPACE",
-    "ca",
-    "iSPACE",
-    "pl",
-    "ve",
-    "ha",
-    "ne",
-    "da",
-    "he",
-    "wi",
-]
-top_feature_KIT_Tablet_F1 = ["me", "is", "ne", "ha"]
-top_feature_KIT_Tablet_F2 = ["ha", "is", "me"]
-top_feature_KIT_Tablet_F3 = ["ne"]
-top_feature_KIT_Phone_F1 = ["BACKSPACEBACKSPACE"]
-top_feature_KIT_Phone_F2 = ["BACKSPACEBACKSPACE"]
-top_feature_KIT_Phone_F4 = ["BACKSPACEBACKSPACE"]
 
 
 def top_feature_KIT(feature_dict):
@@ -84,39 +59,3 @@ def top_feature_KIT(feature_dict):
     # print(selected_top_feature)
     # input("REACH")
     return selected_top_feature
-
-
-def concatenated_feature_matrix_KIT():
-    feature_KIT_Desktop_F1 = top_feature_KIT(
-        "desktop_kit_feature_f1_dictionary.pickle", top_feature_KIT_Desktop_F1
-    )
-    feature_KIT_Tablet_F1 = top_feature_KIT(
-        "tablet_kit_feature_f1_dictionary.pickle", top_feature_KIT_Tablet_F1
-    )
-    feature_KIT_Tablet_F2 = top_feature_KIT(
-        "tablet_kit_feature_f2_dictionary.pickle", top_feature_KIT_Tablet_F2
-    )
-    feature_KIT_Tablet_F3 = top_feature_KIT(
-        "tablet_kit_feature_f3_dictionary.pickle", top_feature_KIT_Tablet_F3
-    )
-    feature_KIT_Phone_F1 = top_feature_KIT(
-        "phone_kit_feature_f1_dictionary.pickle", top_feature_KIT_Phone_F1
-    )
-    feature_KIT_Phone_F2 = top_feature_KIT(
-        "phone_kit_feature_f2_dictionary.pickle", top_feature_KIT_Phone_F2
-    )
-    feature_KIT_Phone_F4 = top_feature_KIT(
-        "phone_kit_feature_f4_dictionary.pickle", top_feature_KIT_Phone_F4
-    )
-    return np.concatenate(
-        (
-            np.array(feature_KIT_Desktop_F1),
-            np.array(feature_KIT_Tablet_F1),
-            np.array(feature_KIT_Tablet_F2),
-            np.array(feature_KIT_Tablet_F3),
-            np.array(feature_KIT_Phone_F1),
-            np.array(feature_KIT_Phone_F2),
-            np.array(feature_KIT_Phone_F4),
-        ),
-        axis=1,
-    )
