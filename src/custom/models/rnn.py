@@ -6,7 +6,7 @@ import torch.nn as nn
 from torch.autograd import Variable
 from imblearn.over_sampling import SMOTE
 
-from custom.features.feature_lists import get_combined_features
+from features.feature_lists import get_combined_features
 
 
 # RNN model for classification tasks
