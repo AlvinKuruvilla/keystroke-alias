@@ -1,13 +1,13 @@
 import os
 from rich.traceback import install
-from features.fe_util import load_feature_file, pickle_all_feature_data
+from custom.features.fe_util import load_feature_file, pickle_all_feature_data
 
-from models.regression_age_task import run_age_xgb_regression
-from models.rnn_gender import train_model
+from custom.models.regression_age_task import run_age_xgb_regression
+from custom.models.rnn_gender import train_model
 
 
 install()
-from features.fe import (
+from custom.features.fe import (
     get_all_users_features_KHT,
     get_all_users_features_KIT,
 )

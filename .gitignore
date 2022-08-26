@@ -2,3 +2,8 @@
 *.pickle
 env/
 metadata.csv
+rnn_all_keystroke.log
+rnn_kht_only.log
+xgb_all_keystroke.log
+xgb_kht_only.log
+xgb_kht_only_2.log

@@ -2,8 +2,8 @@ import os
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
-from .kht import get_KHT_features
-from .kit import (
+from custom.features.kht import get_KHT_features
+from custom.features.kit import (
     get_dataframe_KIT,
     get_KIT_features_F2,
     get_KIT_features_F1,
@@ -11,7 +11,7 @@ from .kit import (
     get_KIT_features_F4,
 )
 
-from .word_level import get_advanced_word_features
+from custom.features.word_level import get_advanced_word_features
 
 
 def get_all_users_features_KIT(directory):

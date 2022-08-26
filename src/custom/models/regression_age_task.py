@@ -2,10 +2,9 @@ import numpy as np
 import pandas as pd
 import xgboost as xgb
 from sklearn import preprocessing
-from sklearn.feature_selection import SelectKBest, mutual_info_classif
 from sklearn.metrics import mean_absolute_error
 from sklearn.model_selection import GridSearchCV, train_test_split
-from features.feature_lists import get_combined_features, get_desktop_features
+from custom.features.feature_lists import get_desktop_features
 
 
 def compare_regression(label_name, feature_type, top_n_features, model):

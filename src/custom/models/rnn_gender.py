@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 from torch.autograd import Variable
 from sklearn.model_selection import StratifiedKFold
-from models.rnn import RNN_Net, get_train_test_splits
+from custom.models.rnn import RNN_Net, get_train_test_splits
 
 # Gender classification
 seed = 1

@@ -61,21 +61,21 @@ def top_feature_KIT(feature_dict):
         [0 for x in range(80)] for x in range(len(feature_dict.keys()))
     ]
     print(np.array(selected_top_feature).shape)
-    # input()
+    x, y = np.array(selected_top_feature).shape
     # for key1 in kit_feature_dictionary:
     #     print(("LENGTH:", len(list(feature_dict.get(key1).keys()))))
     for key1 in kit_feature_dictionary:
         counter = 0
         for i in list(feature_dict.get(key1).keys()):
-            print(i)
+            # print(i)
             for key2 in kit_feature_dictionary[key1]:
                 if str(i) == str(key2):
                     # print("Key1:", key1)
                     # print("Counter:", counter)
                     # TODO: Double check that this value is still correct removing test.csv and other test data may change the shape of the feature dictionaries
-                    if key1 <= 60:
-                        print("Key1:", key1)
-                        print("Counter:", counter)
+                    if key1 <= x and counter < y:
+                        # print("Key1:", key1)
+                        # print("Counter:", counter)
                         selected_top_feature[key1 - 1][counter] = np.median(
                             kit_feature_dictionary[key1][key2]
                         )
