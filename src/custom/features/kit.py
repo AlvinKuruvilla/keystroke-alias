@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-from .fe_util import conform_to_int, event_to_int
+from custom.features.fe_util import conform_to_int, event_to_int
 
 
 def get_timings_KIT(keys_in_pipeline, search_key, search_key_timing):
