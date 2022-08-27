@@ -5,19 +5,24 @@ from imblearn.over_sampling import SMOTE
 from core.features.feature_processor import get_combined_features
 
 
+# Create the appropriate train-test splits for free text classification tasks to align with the ML models
 def get_train_test_splits(label_name):
-    demographics_data_frame = pd.read_csv("Demographics.csv")
+    demographics_data_frame = pd.read_csv("Demographics2.csv")
     Y_values = demographics_data_frame[label_name].to_numpy()
     Y_vector = np.asarray(Y_values)
 
     if label_name == "Gender" or label_name == "Ethnicity":
-        for i in range(60):
+        for i in range(Y_values.size):
+            # print(Y_values.size)
+            # input()
             if Y_values[i] == "M" or Y_values[i] == "Asian":
                 Y_vector[i] = 1
             else:
                 Y_vector[i] = 0
     Y_vector = Y_vector[:-1]
     Y_values = Y_values[:-1]
+    print(Y_vector)
+    input()
     Y_vector = Y_vector.astype("int")
 
     # uncomment one of the below four lines for the required feature set

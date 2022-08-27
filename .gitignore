@@ -7,3 +7,5 @@ rnn_kht_only.log
 xgb_all_keystroke.log
 xgb_kht_only.log
 xgb_kht_only_2.log
+data/subset
+Demographics2.csv

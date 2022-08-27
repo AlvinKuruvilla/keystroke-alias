@@ -1,10 +1,12 @@
-import numpy as np
-from sklearn.model_selection import train_test_split
 import torch
+import numpy as np
 import torch.nn as nn
 from torch.autograd import Variable
 from sklearn.model_selection import StratifiedKFold
-from core.tasks.rnn_net import RNN_Net
+from sklearn.model_selection import train_test_split
+from sklearn.feature_selection import SelectKBest, mutual_info_classif
+from core.tasks.cnn import CNN_Net
+
 from core.tasks.rnn_utils import get_train_test_splits
 
 # Gender classification
@@ -20,14 +22,12 @@ def weights_init(layer):
         nn.init.kaiming_uniform_(layer.weight.data)
 
 
-def train_model(label_type):
-    print("Label type: " + label_type)
+def train_model_cnn(label_type):
     X_matrix_new, Y_vector = get_train_test_splits(label_type)
-    print("X Matrix new: ", X_matrix_new)
-    # input("X Matrix")
-    print("Y Vector:", Y_vector)
-    # input("Y Vector")
-    X_matrix_new = np.resize(X_matrix_new, (X_matrix_new.shape[0], 3, 547))
+    X_matrix_new = SelectKBest(mutual_info_classif, k=256).fit_transform(
+        X_matrix_new, Y_vector
+    )
+    X_matrix_new = np.resize(X_matrix_new, (X_matrix_new.shape[0], 1, 40, 40))
 
     X_train, X_test, Y_train, Y_test = train_test_split(
         X_matrix_new, Y_vector, test_size=0.3, random_state=0
@@ -38,10 +38,12 @@ def train_model(label_type):
     split_num = 0
 
     for train_index, val_index in kf.split(X_train, Y_train):
+        print("Split Num: " + str(split_num))
+        split_num += 1
         X_train, X_val = X_matrix_new[train_index], X_matrix_new[val_index]
         Y_train, Y_val = Y_vector[train_index], Y_vector[val_index]
 
-        fcn = RNN_Net(10, 547, 10, 2)
+        fcn = CNN_Net(X_train.shape[1], 2)
         fcn.apply(weights_init)
         optimizer = torch.optim.Adam(fcn.parameters(), lr=0.001)
         scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, "max")
@@ -75,11 +77,8 @@ def train_model(label_type):
         for epoch in range(10):
             for itr, (x, y) in enumerate(train_dataloader):
                 fcn.train()
-
-                # print(x.shape)
-
-                if x.shape[0] != 10:
-                    continue
+                x = x
+                y = y
 
                 outputs = fcn(x)
                 loss = loss_func(outputs, y.long())
@@ -112,9 +111,8 @@ def train_model(label_type):
                     test_total = 0
 
                     for (x, y) in train_dataloader:
-
-                        if x.shape[0] != 10:
-                            continue
+                        x = x
+                        y = y
 
                         outputs = fcn(x)
                         _, predicted = torch.max(outputs.data, 1)
@@ -122,8 +120,8 @@ def train_model(label_type):
                         train_correct += (y == predicted).sum().item()
 
                     for (x, y) in val_dataloader:
-                        if x.shape[0] != 10:
-                            continue
+                        x = x
+                        y = y
 
                         outputs = fcn(x)
                         _, predicted = torch.max(outputs.data, 1)
@@ -131,16 +129,15 @@ def train_model(label_type):
                         val_correct += (y == predicted).sum().item()
 
                     for (x, y) in test_dataloader:
-
-                        if x.shape[0] != 10:
-                            continue
+                        x = x
+                        y = y
 
                         outputs = fcn(x)
                         _, predicted = torch.max(outputs.data, 1)
                         test_total += y.size(0)
                         test_correct += (y == predicted).sum().item()
 
-                if 100 * val_correct / val_total >= 50:
+                if 100 * val_correct / val_total > 60:
                     print(
                         "Epoch: "
                         + str(epoch)
