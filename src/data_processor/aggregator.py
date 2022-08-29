@@ -1,7 +1,18 @@
 import os
+import enum
 import pandas as pd
 import collections
 from tqdm import tqdm
+from rich.traceback import install
+import statistics
+
+install()
+
+
+class Platform(enum.Enum):
+    FACEBOOK = 0
+    INSTAGRAM = 1
+    TWITTER = 2
 
 
 def flatten(l):
@@ -75,6 +86,22 @@ class KeystrokeFile:
             ret.append(digraph_set[0])
         return ret
 
+    def keystroke_count(self):
+        # NOTE: A "keystroke" in this context only refers to the press events within the file
+        data = self.data()
+        count = 0
+        try:
+            re = data.drop("Time", axis=1)
+        except KeyError:
+            re = data.drop(data.columns[[2]], axis=1)
+        action = list(re.iloc[:, 0])
+        keys = list(re.iloc[:, 1])
+        assert len(keys) == len(action)
+        for index in range(len(keys)):
+            if action[index] == "P":
+                count += 1
+        return count
+
 
 def all_common_digraphs(n: int):
     p = os.path.join(os.getcwd(), "data", "km")
@@ -90,5 +117,93 @@ def all_common_digraphs(n: int):
     return kf.n_most_common_digraphs(frequencies, n)
 
 
+def average_keystroke_counts(platform: Platform):
+    p = os.path.join(os.getcwd(), "data", "km")
+    onlyfiles = [f for f in os.listdir(p) if os.path.isfile(os.path.join(p, f))]
+    count = 0
+    file_count = 0
+    for file in onlyfiles:
+        if platform == Platform.FACEBOOK:
+            if file.endswith(".csv") and file.startswith("f_"):
+                file_count += 1
+                kf = KeystrokeFile(os.path.join(os.getcwd(), "data", "km", file))
+                count += kf.keystroke_count()
+        elif platform == Platform.INSTAGRAM:
+            if file.endswith(".csv") and file.startswith("i_"):
+                file_count += 1
+                kf = KeystrokeFile(os.path.join(os.getcwd(), "data", "km", file))
+                count += kf.keystroke_count()
+        elif platform == Platform.TWITTER:
+            if file.endswith(".csv") and file.startswith("t_"):
+                file_count += 1
+                kf = KeystrokeFile(os.path.join(os.getcwd(), "data", "km", file))
+                count += kf.keystroke_count()
+    return count // file_count
+
+
+def stdev_keystroke_count(platform: Platform):
+    p = os.path.join(os.getcwd(), "data", "km")
+    onlyfiles = [f for f in os.listdir(p) if os.path.isfile(os.path.join(p, f))]
+    counts = []
+    for file in onlyfiles:
+        if platform == Platform.FACEBOOK:
+            if file.endswith(".csv") and file.startswith("f_"):
+                kf = KeystrokeFile(os.path.join(os.getcwd(), "data", "km", file))
+                counts.append(kf.keystroke_count())
+        elif platform == Platform.INSTAGRAM:
+            if file.endswith(".csv") and file.startswith("i_"):
+                kf = KeystrokeFile(os.path.join(os.getcwd(), "data", "km", file))
+                counts.append(kf.keystroke_count())
+        if platform == Platform.TWITTER:
+            if file.endswith(".csv") and file.startswith("t_"):
+                kf = KeystrokeFile(os.path.join(os.getcwd(), "data", "km", file))
+                counts.append(kf.keystroke_count())
+    return statistics.stdev(counts)
+
+
+def min_keystroke_count(platform: Platform):
+    p = os.path.join(os.getcwd(), "data", "km")
+    onlyfiles = [f for f in os.listdir(p) if os.path.isfile(os.path.join(p, f))]
+    counts = []
+    for file in onlyfiles:
+        if platform == Platform.FACEBOOK:
+            if file.endswith(".csv") and file.startswith("f_"):
+                kf = KeystrokeFile(os.path.join(os.getcwd(), "data", "km", file))
+                counts.append(kf.keystroke_count())
+        elif platform == Platform.INSTAGRAM:
+            if file.endswith(".csv") and file.startswith("i_"):
+                kf = KeystrokeFile(os.path.join(os.getcwd(), "data", "km", file))
+                counts.append(kf.keystroke_count())
+        if platform == Platform.TWITTER:
+            if file.endswith(".csv") and file.startswith("t_"):
+                kf = KeystrokeFile(os.path.join(os.getcwd(), "data", "km", file))
+                counts.append(kf.keystroke_count())
+    return min(counts)
+
+
+def max_keystroke_count(platform: Platform):
+    p = os.path.join(os.getcwd(), "data", "km")
+    onlyfiles = [f for f in os.listdir(p) if os.path.isfile(os.path.join(p, f))]
+    counts = []
+    for file in onlyfiles:
+        if platform == Platform.FACEBOOK:
+            if file.endswith(".csv") and file.startswith("f_"):
+                kf = KeystrokeFile(os.path.join(os.getcwd(), "data", "km", file))
+                counts.append(kf.keystroke_count())
+        elif platform == Platform.INSTAGRAM:
+            if file.endswith(".csv") and file.startswith("i_"):
+                kf = KeystrokeFile(os.path.join(os.getcwd(), "data", "km", file))
+                counts.append(kf.keystroke_count())
+        if platform == Platform.TWITTER:
+            if file.endswith(".csv") and file.startswith("t_"):
+                kf = KeystrokeFile(os.path.join(os.getcwd(), "data", "km", file))
+                counts.append(kf.keystroke_count())
+    return max(counts)
+
+
 if __name__ == "__main__":
-    print(all_common_digraphs(30))
+    for platform in Platform:
+        print("Average Keystrokes for", platform, average_keystroke_counts(platform))
+        print("Standard Deviation for", platform, stdev_keystroke_count(platform))
+        print("Max Keystrokes for", platform, max_keystroke_count(platform))
+        print("Min Keystrokes for", platform, min_keystroke_count(platform))
