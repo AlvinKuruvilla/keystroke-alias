@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from xgboost import XGBRegressor
+import xgboost as xgb
 from sklearn import preprocessing
 from sklearn.metrics import mean_absolute_error
 from sklearn.model_selection import GridSearchCV, train_test_split
@@ -21,8 +21,8 @@ def compare_regression(label_name, feature_type, top_n_features, model):
     Y_values = demographics_data_frame[label_name].to_numpy()
 
     Y_vector = np.asarray(Y_values)
-
-    Y_vector = Y_vector[:-1]
+    # NOTE Changed to -5 from -1
+    Y_vector = Y_vector[:-5]
     Y_vector = Y_vector.astype("int")
 
     X_matrix = feature_type
@@ -32,16 +32,16 @@ def compare_regression(label_name, feature_type, top_n_features, model):
     X_matrix = preprocessing.scale(X_matrix)
 
     np.random.seed(0)
-    X_matrix_new = SelectKBest(mutual_info_classif, k=top_n_features).fit_transform(
-        X_matrix, Y_vector
-    )
 
     # Split the dataset in two equal parts
     X_train, X_test, y_train, y_test = train_test_split(
-        X_matrix_new, Y_vector, test_size=0.3, random_state=0
+        X_matrix, Y_vector, test_size=0.3, random_state=0
     )
-
-    if model == "XGB":
+    # print("X_train: ", X_train)
+    # print("Y_train: ", y_train)
+    # print("x_test:", X_test)
+    # print("y_test:", y_test)
+    if model == "XGBoost":
         # Set the parameters by cross-validation
         tuned_parameters = {
             "objective": ["reg:linear"],
@@ -55,14 +55,19 @@ def compare_regression(label_name, feature_type, top_n_features, model):
         }
 
         clf = GridSearchCV(
-            XGBRegressor(),
+            xgb.XGBRegressor(verbosity=0),
             tuned_parameters,
             scoring="neg_mean_absolute_error",
             return_train_score=True,
         )
         clf.fit(X_train, y_train)
+        # TODO: Pickle classifier for BBMASS model here
 
         y_true, y_pred = y_test, clf.predict(X_test)
+        print("Mean absolute error:", mean_absolute_error(y_true, y_pred))
+        # print("Best params", clf.best_params_)
+        print("Results", clf.cv_results_)
+        # input()
         return mean_absolute_error(y_true, y_pred), clf.best_params_, clf.cv_results_
 
 
