@@ -8,6 +8,8 @@ from core.tasks.xgb_regression_age import run_age_xgb_regression
 
 # from custom.models.rnn_gender import train_model
 from core.tasks.rnn_gender_task import train_model
+from fpd.feature_gen import generate_features_file
+from fpd.svm import create_svm
 
 install()
 from custom.features.fe import (
@@ -18,7 +20,7 @@ from custom.features.fe import (
 if __name__ == "__main__":
     # TODO: Pickle dump the desktop pickle files and add function for advanced word pickle file
     dir_name = "data/"
-    dir_path = os.path.join(os.getcwd(), dir_name, "Desktop/")
+    dir_path = os.path.join(os.getcwd(), dir_name, "km/")
     selected_profile_path = os.path.join(dir_path)
     # desktop_kht_features = get_all_users_features_KHT(selected_profile_path)
     # with open("desktop_kht_feature_dictionary.pickle", "wb") as handle:
@@ -43,4 +45,6 @@ if __name__ == "__main__":
     # train_model_cnn("Gender")
     with open("kit_f2.pickle", "rb") as handle:
         data = pickle.load(handle)
-    print(data)
+    # print(data)
+    # generate_features_file(selected_profile_path)
+    create_svm()
