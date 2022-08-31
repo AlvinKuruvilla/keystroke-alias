@@ -8,6 +8,7 @@ from core.tasks.xgb_regression_age import run_age_xgb_regression
 
 # from custom.models.rnn_gender import train_model
 from core.tasks.rnn_gender_task import train_model
+from fpd.ensemble import adaboost, bagged_decision_tree_classifier, voting_ensemble
 from fpd.feature_gen import generate_features_file
 from fpd.classifiers import create_svm, random_forrest, xgb_classifier
 
@@ -51,4 +52,9 @@ if __name__ == "__main__":
     # train_model("Gender")
     # train_model_cnn("Gender")
     # generate_features_file(selected_profile_path)
+    # xgb_classifier()
+    bagged_decision_tree_classifier()
+    adaboost()
+    voting_ensemble()
+    random_forrest()
     xgb_classifier()

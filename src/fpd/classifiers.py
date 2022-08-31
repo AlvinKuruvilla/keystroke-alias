@@ -34,6 +34,7 @@ def create_svm():
     print("Accuracy:", metrics.accuracy_score(y_test, y_pred))
 
 
+# FROM: https://stackoverflow.com/questions/31681373/making-svm-run-faster-in-python
 def random_forrest():
     fp = Dataset(
         "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/all_features.csv"
@@ -46,20 +47,20 @@ def random_forrest():
         random_state=1,
         stratify=y,
     )  # 70% training and 30% test
-    print(X_train)
-    input()
-    print(X_test)
-    input()
-    print(y_train)
-    input()
-    print(y_test)
-    input()
+    # print(X_train)
+    # input()
+    # print(X_test)
+    # input()
+    # print(y_train)
+    # input()
+    # print(y_test)
+    # input()
     forest = RandomForestClassifier(
         criterion="gini", n_estimators=5, random_state=1, n_jobs=100
     )
     forest.fit(X_train, y_train)
     y_pred = forest.predict(X_test)
-    print("Accuracy: %.3f" % metrics.accuracy_score(y_test, y_pred))
+    print("Random Forrest Accuracy: %.3f" % metrics.accuracy_score(y_test, y_pred))
 
 
 def xgb_classifier():
@@ -74,20 +75,19 @@ def xgb_classifier():
         random_state=1,
         stratify=y,
     )  # 70% training and 30% test
-    print(X_train)
-    input()
-    print(X_test)
-    input()
-    print(y_train)
-    input()
-    print(y_test)
-    input()
+    # print(X_train)
+    # input()
+    # print(X_test)
+    # input()
+    # print(y_train)
+    # input()
+    # print(y_test)
+    # input()
     dtrain = xgb.DMatrix(X_train, label=y_train)
     dtest = xgb.DMatrix(X_test, label=y_test)
     param = {
         "max_depth": 3,  # the maximum depth of each tree
         "eta": 0.3,  # the training step for each iteration
-        "silent": 1,  # logging mode - quiet
         "objective": "multi:softprob",  # error evaluation for multiclass training
         "num_class": 3,  # the number of classes that exist in this dataset
     }
@@ -96,4 +96,6 @@ def xgb_classifier():
     preds = bst.predict(dtest)
     best_preds = np.asarray([np.argmax(line) for line in preds])
     print("Precision:", metrics.precision_score(y_test, best_preds, average="macro"))
-    print("Accuracy: %.3f" % metrics.accuracy_score(y_test, best_preds))
+    print(
+        "XGBoost Classifier Accuracy: %.3f" % metrics.accuracy_score(y_test, best_preds)
+    )
