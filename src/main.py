@@ -9,7 +9,7 @@ from core.tasks.xgb_regression_age import run_age_xgb_regression
 # from custom.models.rnn_gender import train_model
 from core.tasks.rnn_gender_task import train_model
 from fpd.feature_gen import generate_features_file
-from fpd.svm import create_svm
+from fpd.classifiers import create_svm, random_forrest
 
 install()
 from custom.features.fe import (
@@ -47,4 +47,4 @@ if __name__ == "__main__":
         data = pickle.load(handle)
     # print(data)
     # generate_features_file(selected_profile_path)
-    create_svm()
+    random_forrest()

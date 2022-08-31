@@ -1,33 +1,9 @@
-import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn import svm
 from sklearn import metrics
+from sklearn.ensemble import RandomForestClassifier
 import numpy as np
-
-
-class Dataset:
-    def __init__(self, dataset_path):
-        self.dataset_path = dataset_path
-        self.data = pd.read_csv(self.dataset_path)
-
-    def path(self):
-        return self.dataset_path
-
-    def get_data(self):
-        return self.data
-
-    def as_numpy_array(self):
-        return self.data.to_numpy()
-
-    def feature_names(self):
-        # The last column denotes whether or not the user is a fake profile or not so we want to ignore
-        return list(self.get_data().columns[:-1])
-
-    def target_names(self):
-        return ["Fake Profile", "Genuine Profile"]
-
-    def target(self):
-        return np.array(list(self.get_data().iloc[:, len(self.feature_names())]))
+from fpd.dataset import Dataset
 
 
 def create_svm():
@@ -55,3 +31,31 @@ def create_svm():
     y_pred = clf.predict(X_test)
     print(y_pred)
     print("Accuracy:", metrics.accuracy_score(y_test, y_pred))
+
+
+def random_forrest():
+    fp = Dataset(
+        "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/all_features.csv"
+    )
+    y = fp.target()
+    X_train, X_test, y_train, y_test = train_test_split(
+        fp.as_numpy_array(),
+        fp.target(),
+        test_size=0.3,
+        random_state=1,
+        stratify=y,
+    )  # 70% training and 30% test
+    print(X_train)
+    input()
+    print(X_test)
+    input()
+    print(y_train)
+    input()
+    print(y_test)
+    input()
+    forest = RandomForestClassifier(
+        criterion="gini", n_estimators=5, random_state=1, n_jobs=2
+    )
+    forest.fit(X_train, y_train)
+    y_pred = forest.predict(X_test)
+    print("Accuracy: %.3f" % metrics.accuracy_score(y_test, y_pred))
