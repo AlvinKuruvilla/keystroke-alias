@@ -1,4 +1,5 @@
 import os
+import pandas as pd
 import pickle
 from rich.traceback import install
 from core.tasks.cnn_gender_task import train_model_cnn
@@ -9,7 +10,12 @@ from core.tasks.xgb_regression_age import run_age_xgb_regression
 # from custom.models.rnn_gender import train_model
 from core.tasks.rnn_gender_task import train_model
 from fpd.ensemble import adaboost, bagged_decision_tree_classifier, voting_ensemble
-from fpd.feature_gen import generate_features_file, kht_for_file
+from fpd.feature_gen import (
+    generate_features_file,
+    kht_for_file,
+    remove_invalid_keystrokes,
+    split_into_four,
+)
 from fpd.classifiers import create_svm, random_forrest, xgb_classifier
 
 install()
@@ -52,14 +58,25 @@ if __name__ == "__main__":
     # train_model("Gender")
     # train_model_cnn("Gender")
     # generate_features_file(selected_profile_path)
-    xgb_classifier()
-    bagged_decision_tree_classifier()
-    adaboost()
-    voting_ensemble()
-    random_forrest()
-    xgb_classifier()
+
+    # xgb_classifier()
+    # bagged_decision_tree_classifier()
+    # adaboost()
+    # voting_ensemble()
+    # random_forrest()
+    # xgb_classifier()
+    df = pd.read_csv(
+        "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/data/km/f_18_fpd1.csv",
+        header=None,
+    )
+    data = split_into_four(df)
     # print(
     #     kht_for_file(
     #         "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/data/km/f_18_fpd1.csv"
     #     )
     # )
+    d = remove_invalid_keystrokes(data)
+    for i in range(0, len(data)):
+        df = d[i]
+        print(df)
+        input()

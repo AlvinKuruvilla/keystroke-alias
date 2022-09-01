@@ -2,6 +2,7 @@ import itertools
 import os
 import pickle
 import csv
+from typing import List
 import numpy as np
 import statistics
 import pandas as pd
@@ -129,3 +130,33 @@ def generate_features_file(directory: str):
                 writer.writerow(all_features)
                 user_count += 1
                 all_features.clear()
+
+
+def split_into_four(df: pd.DataFrame):
+    ret = []
+    i = 4
+    # df.index represents the number of rows in the dataframe
+    for j in range(0, len(df.index), 4):
+        ret.append(df.iloc[j:i])
+        i += 4
+    return ret
+
+
+def merge_dataframes(df_list):
+    return pd.concat(df_list, axis=0, ignore_index=True)
+
+
+# Handles strings like "<0>""
+def remove_invalid_keystrokes(data):
+    for i in range(0, len(data)):
+        df = data[i]
+        for row in df.itertuples():
+            print(row[2])
+            if row[2] == "<0>":
+                print("HERE")
+                num = int(row.Index)
+                print(num)
+                rem = df.drop(index=num)
+                data[i] = rem
+    # After removing the weird values the size of each dataframe element is smaller so we need to coalesce and res-partition them
+    return split_into_four(merge_dataframes(data))
