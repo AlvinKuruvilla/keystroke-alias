@@ -7,7 +7,7 @@ from sklearn.ensemble import VotingClassifier
 from sklearn.ensemble import AdaBoostClassifier
 from fpd.dataset import Dataset
 
-
+# FROM: https://www.datacamp.com/tutorial/ensemble-learning-python
 def bagged_decision_tree_classifier():
     fp = Dataset(
         "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/all_features.csv"

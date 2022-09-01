@@ -11,7 +11,7 @@ class Dataset:
         return self.dataset_path
 
     def get_data(self):
-        return self.data
+        return self.data.drop(columns=["ID"])
 
     def as_numpy_array(self):
         return self.data.to_numpy()
