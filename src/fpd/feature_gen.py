@@ -200,6 +200,23 @@ def dictionary_to_flat_list(d):
     return res
 
 
+def platform_test(directory: str):
+    user_files = os.listdir(directory)
+    for i in tqdm(range(len(user_files))):
+        user_file = user_files[i]
+        if ".csv" in user_file and not user_file.startswith("."):
+            print(user_file)
+            path = directory + user_file
+            if (
+                path_to_platform(path).upper() == "F"
+                or path_to_platform(path).upper() == "I"
+            ):
+                classification = 0
+            elif path_to_platform(path).upper() == "T":
+                classification = 1
+            print(classification)
+
+
 def make_features_file(directory: str):
     user_id = 1
     # classification refers to being genuine (0) or a fake profile (1)

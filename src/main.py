@@ -16,6 +16,7 @@ from fpd.feature_gen import (
     kht_from_dataframe,
     kit_from_dataframe,
     make_features_file,
+    platform_test,
     remove_invalid_keystrokes,
     split_into_four,
 )
