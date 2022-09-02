@@ -6,4 +6,4 @@ xgboost
 imblearn
 tqdm
 torch
-rick
+rich
