@@ -13,6 +13,9 @@ from fpd.ensemble import adaboost, bagged_decision_tree_classifier, voting_ensem
 from fpd.feature_gen import (
     generate_features_file,
     kht_for_file,
+    kht_from_dataframe,
+    kit_from_dataframe,
+    make_features_file,
     remove_invalid_keystrokes,
     split_into_four,
 )
@@ -65,18 +68,4 @@ if __name__ == "__main__":
     # voting_ensemble()
     # random_forrest()
     # xgb_classifier()
-    df = pd.read_csv(
-        "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/data/km/f_18_fpd1.csv",
-        header=None,
-    )
-    data = split_into_four(df)
-    # print(
-    #     kht_for_file(
-    #         "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/data/km/f_18_fpd1.csv"
-    #     )
-    # )
-    d = remove_invalid_keystrokes(data)
-    for i in range(0, len(data)):
-        df = d[i]
-        print(df)
-        input()
+    make_features_file(selected_profile_path)
