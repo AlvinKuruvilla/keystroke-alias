@@ -5,14 +5,20 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.svm import SVC
 from sklearn.ensemble import VotingClassifier
 from sklearn.ensemble import AdaBoostClassifier
-from fpd.dataset import Dataset
+from fpd.classifiers import label_encode_keys
+from fpd.dataset import Dataset, TextDataset
 
 # FROM: https://www.datacamp.com/tutorial/ensemble-learning-python
-def bagged_decision_tree_classifier():
-    fp = Dataset(
-        "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/all_features.csv"
-    )
-    X = fp.as_numpy_array()
+def bagged_decision_tree_classifier(use_csv: bool = False):
+    if use_csv:
+        fp = Dataset(
+            "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/all_features.csv"
+        )
+    elif use_csv == False:
+        fp = TextDataset(
+            "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/keystroke_features.txt"
+        )
+    X = label_encode_keys(fp.as_numpy_array())
     Y = fp.target()
     kfold = model_selection.KFold(n_splits=10, random_state=7, shuffle=True)
     cart = DecisionTreeClassifier()
@@ -24,11 +30,16 @@ def bagged_decision_tree_classifier():
     print("Bagged Decision Tree Ensemble Classifier accuracy:", results.mean())
 
 
-def adaboost():
-    fp = Dataset(
-        "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/all_features.csv"
-    )
-    X = fp.as_numpy_array()
+def adaboost(use_csv: bool = False):
+    if use_csv:
+        fp = Dataset(
+            "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/all_features.csv"
+        )
+    elif use_csv == False:
+        fp = TextDataset(
+            "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/keystroke_features.txt"
+        )
+    X = label_encode_keys(fp.as_numpy_array())
     Y = fp.target()
     seed = 7
     num_trees = 70
@@ -38,11 +49,16 @@ def adaboost():
     print("ADAboost Ensemble Classifier accuracy:", results.mean())
 
 
-def voting_ensemble():
-    fp = Dataset(
-        "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/all_features.csv"
-    )
-    X = fp.as_numpy_array()
+def voting_ensemble(use_csv: bool = False):
+    if use_csv:
+        fp = Dataset(
+            "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/all_features.csv"
+        )
+    elif use_csv == False:
+        fp = TextDataset(
+            "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/keystroke_features.txt"
+        )
+    X = label_encode_keys(fp.as_numpy_array())
     Y = fp.target()
     seed = 7
     kfold = model_selection.KFold(n_splits=10, random_state=seed, shuffle=True)

@@ -1,5 +1,4 @@
 import os
-import pandas as pd
 import pickle
 from rich.traceback import install
 from core.tasks.cnn_gender_task import train_model_cnn
@@ -9,18 +8,10 @@ from core.tasks.xgb_regression_age import run_age_xgb_regression
 
 # from custom.models.rnn_gender import train_model
 from core.tasks.rnn_gender_task import train_model
+from fpd.dataset import TextDataset
 from fpd.ensemble import adaboost, bagged_decision_tree_classifier, voting_ensemble
-from fpd.feature_gen import (
-    generate_features_file,
-    kht_for_file,
-    kht_from_dataframe,
-    kit_from_dataframe,
-    make_features_file,
-    platform_test,
-    remove_invalid_keystrokes,
-    split_into_four,
-)
-from fpd.classifiers import create_svm, random_forrest, xgb_classifier
+
+from fpd.classifiers import random_forrest, xgb_classifier
 
 install()
 from custom.features.fe import (
@@ -52,6 +43,14 @@ def pickle_features():
         pickle.dump(desktop_kit_features_f4, handle)
 
 
+def run_classifiers(use_csv: bool = False):
+    xgb_classifier(use_csv)
+    # bagged_decision_tree_classifier(use_csv)
+    # adaboost(use_csv)
+    # voting_ensemble(use_csv)
+    # random_forrest(use_csv)
+
+
 if __name__ == "__main__":
     # TODO: Pickle dump the desktop pickle files and add function for advanced word pickle file
     dir_name = "data/"
@@ -63,10 +62,8 @@ if __name__ == "__main__":
     # train_model_cnn("Gender")
     # generate_features_file(selected_profile_path)
 
-    # xgb_classifier()
-    # bagged_decision_tree_classifier()
-    # adaboost()
-    # voting_ensemble()
-    # random_forrest()
-    # xgb_classifier()
-    make_features_file(selected_profile_path)
+    td = TextDataset(
+        "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/keystroke_features.txt"
+    )
+
+    run_classifiers()

@@ -221,7 +221,7 @@ def make_features_file(directory: str):
     user_id = 1
     # classification refers to being genuine (0) or a fake profile (1)
     classification = 0
-    header = ["ID, Char, Timing"]
+    header = ["ID, Char, Timing, Class"]
     user_files = os.listdir(directory)
     with open("keystroke_features.txt", "w") as f:
         f.write(str(header))
