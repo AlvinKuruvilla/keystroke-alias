@@ -45,6 +45,7 @@ def pickle_features():
 
 def run_classifiers(use_csv: bool = False):
     xgb_classifier(use_csv)
+    # FIX: THESE REMAINING CLASSIFIERS DON'T WORK
     # bagged_decision_tree_classifier(use_csv)
     # adaboost(use_csv)
     # voting_ensemble(use_csv)
