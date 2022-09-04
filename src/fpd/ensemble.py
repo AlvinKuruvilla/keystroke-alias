@@ -19,7 +19,7 @@ def bagged_decision_tree_classifier(use_csv: bool = False):
             "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/keystroke_features.txt"
         )
     X = label_encode_keys(fp.as_numpy_array())
-    Y = fp.target()
+    Y = fp.target().ravel()
     kfold = model_selection.KFold(n_splits=10, random_state=7, shuffle=True)
     cart = DecisionTreeClassifier()
     num_trees = 100
@@ -40,7 +40,7 @@ def adaboost(use_csv: bool = False):
             "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/keystroke_features.txt"
         )
     X = label_encode_keys(fp.as_numpy_array())
-    Y = fp.target()
+    Y = fp.target().ravel()
     seed = 7
     num_trees = 70
     kfold = model_selection.KFold(n_splits=10, random_state=seed, shuffle=True)
@@ -59,7 +59,7 @@ def voting_ensemble(use_csv: bool = False):
             "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/keystroke_features.txt"
         )
     X = label_encode_keys(fp.as_numpy_array())
-    Y = fp.target()
+    Y = fp.target().ravel()
     seed = 7
     kfold = model_selection.KFold(n_splits=10, random_state=seed, shuffle=True)
     # create the sub models

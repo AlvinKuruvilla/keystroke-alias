@@ -1,8 +1,6 @@
 import itertools
 import os
-import pickle
 import csv
-from typing import List
 import numpy as np
 import statistics
 import pandas as pd

@@ -44,12 +44,12 @@ def pickle_features():
 
 
 def run_classifiers(use_csv: bool = False):
-    xgb_classifier(use_csv)
-    # FIX: THESE REMAINING CLASSIFIERS DON'T WORK
+    # xgb_classifier(use_csv)
     # bagged_decision_tree_classifier(use_csv)
     # adaboost(use_csv)
+    # FIX: NOT WORKING
     # voting_ensemble(use_csv)
-    # random_forrest(use_csv)
+    random_forrest(use_csv)
 
 
 if __name__ == "__main__":

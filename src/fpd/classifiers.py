@@ -87,7 +87,7 @@ def random_forrest(use_csv: bool = False):
     if use_csv == False:
         label_encoder_x_train = label_encode_keys(X_train)
         label_encoder_x_test = label_encode_keys(X_test)
-        forest.fit(label_encoder_x_train, y_train)
+        forest.fit(label_encoder_x_train, y_train.ravel())
         y_pred = forest.predict(label_encoder_x_test)
         print("Random Forrest Accuracy: %.3f" % metrics.accuracy_score(y_test, y_pred))
 

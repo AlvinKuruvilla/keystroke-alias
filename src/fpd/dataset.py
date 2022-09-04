@@ -3,6 +3,16 @@ import numpy as np
 import statistics
 
 
+def clean_timings(timings):
+    ret = []
+    for time in timings:
+        try:
+            ret.append(int(time.strip()))
+        except ValueError:
+            timings.remove(time)
+    return ret
+
+
 class Dataset:
     # TODO: Make the methods more flexible
     # A wrapper class to represent the ideal csv dataset for our use-case with nicely organized columns
@@ -76,7 +86,9 @@ class TextDataset:
             == stdevs.size
             == classes.size
         )
-        return pd.concat([ids, keys, medians, means, modes, stdevs, classes], axis=1)
+        return pd.concat(
+            [ids, keys, medians, means, modes, stdevs, classes], axis=1
+        ).dropna()
 
     def parse_brackets(self):
         ret = []
@@ -114,8 +126,9 @@ class TextDataset:
             # NOTE: I am wary about doing this because we might end
             # up replacing keys that were meant to have quotes around like ` or " them so we will have to carefully look at the results
             clean = [i.replace('"', "") for i in row]
-
             clean = clean[1:]
+            clean = clean_timings(clean)
+            # print(clean)
             ret.append(clean)
         return pd.Series(ret, name="Timings")
 
@@ -137,9 +150,9 @@ class TextDataset:
             # print(values)
             for value in values:
                 try:
-                    clean = int(value.replace(" ", ""))
+                    clean = int(value)
                 except ValueError:
-                    # print("Invalid value found: %s" % value)
+                    print("Invalid value found: %s" % value)
                     clean = 0
                 hold.append(clean)
             medians.append(np.median(np.array(hold)))
@@ -156,7 +169,7 @@ class TextDataset:
             # print(values)
             for value in values:
                 try:
-                    clean = int(value.replace(" ", ""))
+                    clean = int(value)
                 except ValueError:
                     # print("Invalid value found: %s" % value)
                     clean = 0
@@ -175,7 +188,7 @@ class TextDataset:
             # print(values)
             for value in values:
                 try:
-                    clean = int(value.replace(" ", ""))
+                    clean = int(value)
                 except ValueError:
                     # print("Invalid value found: %s" % value)
                     clean = 0
@@ -183,7 +196,7 @@ class TextDataset:
             try:
                 modes.append(statistics.mode(np.array(hold)))
             except statistics.StatisticsError:
-                # print("ERROR: No unique mode found")
+                print("ERROR: No unique mode found")
                 modes.append(0)
             hold = []
         return pd.Series(modes, name="Modes")
@@ -198,15 +211,15 @@ class TextDataset:
             # print(values)
             for value in values:
                 try:
-                    clean = int(value.replace(" ", ""))
+                    clean = int(value)
                 except ValueError:
-                    # print("Invalid value found: %s" % value)
+                    print("Invalid value found: %s" % value)
                     clean = 0
                 hold.append(clean)
             try:
                 stdevs.append(statistics.stdev(hold))
             except statistics.StatisticsError:
-                # print("ERROR: Less than 2 points to make a standard deviation variance")
+                print("ERROR: Less than 2 points to make a standard deviation variance")
                 stdevs.append(0)
             hold = []
         return pd.Series(stdevs, name="Standard Deviation")
