@@ -5,6 +5,9 @@ import collections
 from tqdm import tqdm
 from rich.traceback import install
 import statistics
+import matplotlib.pyplot as plt
+
+from fpd.dataset import TextDataset
 
 install()
 
@@ -199,6 +202,52 @@ def max_keystroke_count(platform: Platform):
                 kf = KeystrokeFile(os.path.join(os.getcwd(), "data", "km", file))
                 counts.append(kf.keystroke_count())
     return max(counts)
+
+
+def find_letters(keys):
+    letters = [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g",
+        "h",
+        "i",
+        "j",
+        "k",
+        "l",
+        "m",
+        "n",
+        "o",
+        "p",
+        "q",
+        "r",
+        "s",
+        "t",
+        "u",
+        "v",
+        "w",
+        "x",
+        "y",
+        "z",
+    ]
+    matches = []
+    for key in keys:
+        clean = str(key).lower().strip()[1:-1]
+        if clean in letters:
+            matches.append(clean)
+    print(matches)
+    return matches
+
+
+def letter_frequency_graph(td: TextDataset):
+    keys = td.get_key_series().tolist()
+    matches = find_letters(keys)
+    counter = collections.Counter(matches)
+    plt.bar(counter.keys(), counter.values())
+    plt.show()
 
 
 if __name__ == "__main__":
