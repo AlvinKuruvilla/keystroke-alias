@@ -242,11 +242,58 @@ def find_letters(keys):
     return matches
 
 
+def find_special_characters(keys):
+    punctuations = [
+        "Key.space",
+        "Key.cmd",
+        "Key.tab",
+        "Key.enter",
+        "Key.ctrl",
+        "Keys.caps_lock",
+        "Key.backspace",
+        "Key.esc",
+        "Key.shift",
+        "Key.shift_r",
+        ",",
+        ".",
+        ";",
+        "!" "?",
+    ]
+
+    matches = []
+    for key in keys:
+        clean = str(key).strip()[1:-1]
+        print(clean)
+        if clean in punctuations:
+            matches.append(clean)
+    # print(matches)
+    return matches
+
+
 def letter_frequency_graph(td: TextDataset):
     keys = td.get_key_series().tolist()
     matches = find_letters(keys)
     counter = collections.Counter(matches)
     plt.bar(counter.keys(), counter.values())
+    plt.show()
+
+
+def special_character_frequency_graph(td: TextDataset):
+    keys = td.get_key_series().tolist()
+    matches = find_special_characters(keys)
+    counter = collections.Counter(matches)
+    plt.bar(counter.keys(), counter.values())
+    plt.gca().margins(x=0)
+    plt.gcf().canvas.draw()
+    tl = plt.gca().get_xticklabels()
+    maxsize = max([t.get_window_extent().width for t in tl])
+    m = 0.2  # inch margin
+    s = maxsize / plt.gcf().dpi * len(matches) + 2 * m
+    margin = m / plt.gcf().get_size_inches()[0]
+
+    plt.gcf().subplots_adjust(left=margin, right=1.0 - margin)
+    plt.gcf().set_size_inches(s, plt.gcf().get_size_inches()[1])
+
     plt.show()
 
 

@@ -8,6 +8,10 @@ from core.tasks.xgb_regression_age import run_age_xgb_regression
 
 # from custom.models.rnn_gender import train_model
 from core.tasks.rnn_gender_task import train_model
+from data_processor.aggregator import (
+    letter_frequency_graph,
+    special_character_frequency_graph,
+)
 from fpd.dataset import TextDataset
 from fpd.ensemble import adaboost, bagged_decision_tree_classifier, voting_ensemble
 
@@ -67,4 +71,4 @@ if __name__ == "__main__":
         "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/keystroke_features.txt"
     )
 
-    run_classifiers()
+    special_character_frequency_graph(td)
