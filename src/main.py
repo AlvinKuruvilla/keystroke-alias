@@ -16,6 +16,7 @@ from fpd.dataset import TextDataset
 from fpd.ensemble import adaboost, bagged_decision_tree_classifier, voting_ensemble
 
 from fpd.classifiers import random_forrest, xgb_classifier
+from parser.sentence_parser import SentenceParser
 
 install()
 from custom.features.fe import (
@@ -71,4 +72,7 @@ if __name__ == "__main__":
         "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/keystroke_features.txt"
     )
 
-    special_character_frequency_graph(td)
+    sp = SentenceParser(
+        "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/data/km/f_18_fpd1.csv"
+    )
+    print(sp.make_sentences())
