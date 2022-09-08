@@ -83,7 +83,7 @@ def make_features_file(directory: str):
     user_id = 1
     # classification refers to being genuine (0) or a fake profile (1)
     classification = 0
-    header = ["ID, Char, Timing, Class"]
+    header = ["ID, Platform, Char, Timing, Class"]
     user_files = os.listdir(directory)
     with open("keystroke_features.txt", "w") as f:
         f.write(str(header))
@@ -121,6 +121,7 @@ def make_features_file(directory: str):
 
                 for sub_list in kht_data_row:
                     f.write(str(user_id) + " ")
+                    f.write(path_to_platform(path).upper())
                     print(sub_list)
                     # input()
                     f.write(str(sub_list) + " ")
@@ -128,23 +129,27 @@ def make_features_file(directory: str):
                     f.write("\n")
                 for sub_list in kit_data_row_f1:
                     f.write(str(user_id) + " ")
+                    f.write(path_to_platform(path).upper())
                     f.write(str(sub_list) + " ")
                     f.write(classification)
                     f.write("\n")
 
                 for sub_list in kit_data_row_f2:
                     f.write(str(user_id) + " ")
+                    f.write(path_to_platform(path).upper())
                     f.write(str(sub_list) + " ")
                     f.write(classification)
                     f.write("\n")
 
                 for sub_list in kit_data_row_f3:
                     f.write(str(user_id) + " ")
+                    f.write(path_to_platform(path).upper())
                     f.write(str(sub_list) + " ")
                     f.write(classification)
                     f.write("\n")
                 for sub_list in kit_data_row_f4:
                     f.write(str(user_id) + " ")
+                    f.write(path_to_platform(path).upper())
                     f.write(str(sub_list) + " ")
                     f.write(classification)
                     f.write("\n")

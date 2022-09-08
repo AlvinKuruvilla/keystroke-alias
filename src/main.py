@@ -16,6 +16,7 @@ from fpd.dataset import TextDataset
 from fpd.ensemble import adaboost, bagged_decision_tree_classifier, voting_ensemble
 
 from fpd.classifiers import random_forrest, xgb_classifier
+from fpd.feature_gen import make_features_file
 from parser.sentence_parser import SentenceParser
 
 install()
@@ -66,8 +67,7 @@ if __name__ == "__main__":
     # run_age_xgb_regression()
     # train_model("Gender")
     # train_model_cnn("Gender")
-    # generate_features_file(selected_profile_path)
-
+    make_features_file(selected_profile_path)
     td = TextDataset(
         "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/keystroke_features.txt"
     )
