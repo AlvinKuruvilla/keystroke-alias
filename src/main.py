@@ -75,4 +75,4 @@ if __name__ == "__main__":
     sp = SentenceParser(
         "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/data/km/f_18_fpd1.csv"
     )
-    print(sp.make_sentences())
+    print(sp.articles_count_feature())

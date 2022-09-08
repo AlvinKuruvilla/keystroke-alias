@@ -1,22 +1,43 @@
+import string
 import pandas as pd
-from fpd.feature_gen import split_into_four, merge_dataframes
+from fpd.feature_gen import remove_invalid_keystrokes, split_into_four
 
-# Handles strings like "<0>""
-def remove_invalid_keystrokes(data):
-    for i in range(0, len(data)):
-        df = data[i]
-        for row in df.itertuples():
-            # print(row[2])
-            if row[2] == "<0>":
-                # print("HERE")
-                num = int(row.Index)
-                # print(num)
-                rem = df.drop(index=num)
-                data[i] = rem
-    # After removing the weird values the size of each dataframe element is
-    # smaller so we need to coalesce. Re-partitioning will be the job of
-    # subsequent methods that use the return value of this method
-    return merge_dataframes(data)
+
+def helping_verbs():
+    return [
+        "am",
+        "did",
+        "having",
+        "should",
+        "are",
+        "do",
+        "is",
+        "was",
+        "be",
+        "does",
+        "may",
+        "were",
+        "been",
+        "going to",
+        "might",
+        "will",
+        "being",
+        "had",
+        "must",
+        "will be",
+        "can",
+        "has",
+        "ought to",
+        "will have",
+        "could",
+        "have",
+        "shall",
+        "would",
+    ]
+
+
+def articles():
+    return ["the", "an", "a"]
 
 
 class SentenceParser:
@@ -65,3 +86,55 @@ class SentenceParser:
                         continue
                     sentence += key.strip()
         return sentence
+
+    def number_of_words_feature(self):
+        return len(self.get_words())
+
+    def get_words(self):
+        sentences = self.make_sentences()
+        word = ""
+        words = []
+        for letter in sentences:
+            if not letter == " ":
+                word += letter
+            if letter == " " or letter == "\n":
+                words.append(word)
+                word = ""
+        return words
+
+    def punctuation_count_feature(self):
+        count = 0
+        sentences = self.make_sentences()
+        for letter in sentences:
+            if letter in string.punctuation:
+                count += 1
+        return count
+
+    def mean_word_length_feature(self):
+        words = self.get_words()
+        word_count = 0
+        size = 0
+        for word in words:
+            size += len(word)
+            word_count += 1
+        return size / word_count
+
+    def helping_verbs_count_feature(self):
+        count = 0
+        verbs = helping_verbs()
+        words = self.get_words()
+        for word in words:
+            if word in verbs:
+                count += 1
+        return count
+
+    def articles_count_feature(self):
+        count = 0
+        article = articles()
+        words = self.get_words()
+        for word in words:
+            print(word)
+            input()
+            if word in article:
+                count += 1
+        return count
