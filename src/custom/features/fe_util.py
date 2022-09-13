@@ -17,9 +17,9 @@ def remove_outliers(x):
 
 def event_to_int(event: str) -> int:
     if event == "P":
-        return 1
-    elif event == "R":
         return 0
+    elif event == "R":
+        return 1
 
 
 # Make sure that the direction of the event is an integer rather than "P" or "R"
