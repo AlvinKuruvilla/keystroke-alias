@@ -1,6 +1,13 @@
 import string
+import statistics
 import pandas as pd
 from fpd.feature_gen import remove_invalid_keystrokes, split_into_four
+
+
+def is_capital_letter(letter: str) -> bool:
+    if letter in list(string.ascii_uppercase):
+        return True
+    return False
 
 
 def helping_verbs():
@@ -119,6 +126,13 @@ class SentenceParser:
             word_count += 1
         return size / word_count
 
+    def standard_deviation_word_length_feature(self):
+        words = self.get_words()
+        lengths = []
+        for word in words:
+            lengths.append(len(word))
+        return statistics.stdev(lengths)
+
     def helping_verbs_count_feature(self):
         count = 0
         verbs = helping_verbs()
@@ -134,7 +148,14 @@ class SentenceParser:
         words = self.get_words()
         for word in words:
             print(word)
-            input()
             if word in article:
+                count += 1
+        return count
+
+    def capital_letters_count_feature(self):
+        sentence_str = self.make_sentences()
+        count = 0
+        for letter in sentence_str:
+            if is_capital_letter(letter):
                 count += 1
         return count
