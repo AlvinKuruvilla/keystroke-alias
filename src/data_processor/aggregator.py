@@ -295,11 +295,3 @@ def special_character_frequency_graph(td: TextDataset):
     plt.gcf().set_size_inches(s, plt.gcf().get_size_inches()[1])
 
     plt.show()
-
-
-if __name__ == "__main__":
-    for platform in Platform:
-        print("Average Keystrokes for", platform, average_keystroke_counts(platform))
-        print("Standard Deviation for", platform, stdev_keystroke_count(platform))
-        print("Max Keystrokes for", platform, max_keystroke_count(platform))
-        print("Min Keystrokes for", platform, min_keystroke_count(platform))

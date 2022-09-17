@@ -71,6 +71,7 @@ class TextDataset:
 
     def to_df(self):
         ids = self.get_id_series()
+        platforms = self.get_platform_series()
         keys = self.get_key_series()
         medians = self.get_statistical_median_series()
         means = self.get_statistical_mean_series()
@@ -79,6 +80,7 @@ class TextDataset:
         classes = self.get_class_series()
         assert (
             ids.size
+            == platforms.size
             == keys.size
             == medians.size
             == means.size
@@ -86,9 +88,13 @@ class TextDataset:
             == stdevs.size
             == classes.size
         )
-        return pd.concat(
-            [ids, keys, medians, means, modes, stdevs, classes], axis=1
-        ).dropna()
+        return (
+            pd.concat(
+                [ids, platforms, keys, medians, means, modes, stdevs, classes], axis=1
+            )
+            .dropna()
+            .reset_index(drop=True)
+        )
 
     def parse_brackets(self):
         ret = []
@@ -118,6 +124,16 @@ class TextDataset:
             for line in f:
                 ret.append(line.strip().split(" ")[0])
         return pd.Series(ret, name="ID")
+
+    def get_platform_series(self):
+        ret = []
+        with open(self.path(), "r") as f:
+            next(f)
+            for line in f:
+                # TODO: When the issue with the spacing between the platform row and the timings array is fixed we will
+                # need to adjust this line accordingly
+                ret.append((line.strip().split(" ")[1][0]))
+        return pd.Series(ret, name="Platform")
 
     def get_timings_series(self):
         ret = []
