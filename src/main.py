@@ -2,6 +2,7 @@ import os
 import pickle
 import pandas as pd
 from rich.traceback import install
+from custom.features.kht import get_KHT_features
 
 from data_processor.aggregator import (
     Platform,
@@ -10,8 +11,8 @@ from data_processor.aggregator import (
     min_keystroke_count,
     stdev_keystroke_count,
 )
-from fpd.dataset import TextDataset
-from fpd.classifiers import xgb_classifier
+from fpd.dataset import TextDataset, df_percentage_split
+from fpd.classifiers import random_forrest, xgb_classifier
 from fpd.feature_gen import make_kht_features_file, make_kit_features_file
 from parser.sentence_parser import SentenceParser
 
@@ -68,19 +69,22 @@ if __name__ == "__main__":
     dir_path = os.path.join(os.getcwd(), dir_name, "km/")
     selected_profile_path = os.path.join(dir_path)
 
-    td = TextDataset(
-        "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/keystroke_features.txt"
-    )
-
     sp = SentenceParser(
         "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/data/km/f_18_fpd1.csv"
     )
     # print(sp.capital_letters_count_feature())
-    # df = pd.read_csv(
-    #     "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/data/km/f_17_fpd1.csv",
-    #     header=None,
-    # )
+    df = pd.read_csv(
+        "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/data/km/f_17_fpd1.csv",
+        header=None,
+    )
     td = TextDataset(
         "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/kht_features.txt"
     )
-    print(td.get_platform_series())
+    td2 = TextDataset(
+        "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/kit_features.txt"
+    )
+    # get_KHT_features(df.values)
+    # print(td.to_df())
+
+    df = pd.concat([td.to_df(), td2.to_df()])
+    random_forrest()

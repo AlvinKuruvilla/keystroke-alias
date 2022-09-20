@@ -3,6 +3,11 @@ import numpy as np
 import statistics
 
 
+def ids():
+    integers = list(range(1, 61))
+    return [str(i) for i in integers]
+
+
 def clean_timings(timings):
     ret = []
     for time in timings:
@@ -11,6 +16,67 @@ def clean_timings(timings):
         except ValueError:
             timings.remove(time)
     return ret
+
+
+def get_df_slice_by_id(data: pd.DataFrame, id: str):
+    return data.loc[data["ID"] == id]
+
+
+def df_percentage_split(data: pd.DataFrame, split_percentage: float = 0.7):
+    # NOTE: This function assumes the provided split percentage is given in such a way that whatever the remainder is
+    # will be a "test set" (For example, a 70% split percentage providing 30% as the remainder for the test set)
+    # TODO: We need some form of persistence here to make sure the df's gt split the same way every time the function is run
+    if split_percentage <= 0 and split_percentage >= 1:
+        raise ValueError("split_percentage must be between 0 and 1 exclusive")
+    main_split_index = int(round(len(data.index) * split_percentage))
+    incomplete_train_df = data.iloc[:main_split_index, :]
+    incomplete_test_df = data.iloc[main_split_index:, :]
+    assert len(incomplete_test_df.index) + len(incomplete_train_df.index) == len(
+        data.index
+    )
+    y_train = incomplete_train_df.iloc[:, -1:]
+    y_test = incomplete_test_df.iloc[:, -1:]
+
+    X_train = incomplete_train_df.drop(columns=["ID"])
+    X_train = X_train.drop(columns=["Class"])
+
+    X_test = incomplete_test_df.drop(columns=["ID"])
+    X_test = X_test.drop(columns=["Class"])
+    return (
+        X_train.to_numpy(),
+        X_test.to_numpy(),
+        y_train.to_numpy(),
+        y_test.to_numpy(),
+    )
+
+
+def get_target_from_df(data: pd.DataFrame):
+    return np.array(list(data.iloc[:, len(list(data.columns[:-1]))]))
+
+
+def split_into_train_and_test(data: pd.DataFrame):
+    ids_list = ids()
+    x_train_holder = []
+    y_train_holder = []
+    x_test_holder = []
+    y_test_holder = []
+    for id in ids_list:
+        id_df = get_df_slice_by_id(data, id)
+        X_train, X_test, y_train, y_test = df_percentage_split(id_df)
+        x_train_holder.append(X_train)
+        x_test_holder.append(X_test)
+        y_train_holder.append(y_train)
+        y_test_holder.append(y_test)
+    X_train = np.concatenate(x_train_holder, axis=0)
+    X_test = np.concatenate(x_test_holder, axis=0)
+    y_train = np.concatenate(y_train_holder, axis=0)
+    y_test = np.concatenate(y_test_holder, axis=0)
+    return (
+        X_train,
+        X_test,
+        y_train,
+        y_test,
+    )
 
 
 class Dataset:

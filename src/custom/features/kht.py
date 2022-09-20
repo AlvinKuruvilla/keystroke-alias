@@ -11,29 +11,29 @@ def get_KHT(keys_in_pipeline, search_key, search_key_timing):
 
         key = row[1]
         timing = row[2]
-        # print("Key:", key)
-        # input("KEY")
-        # print("Timing:", timing)
-        # input("TIMING")
+        print("Key:", key)
+        input("KEY")
+        print("Timing:", timing)
+        input("TIMING")
         if search_key == key:
             mask[i] = 0
             kht = int(float(search_key_timing)) - int(float(timing))
-            # print(search_key_timing, int(timing))
-            # input("TIMING")
-            # print(kht)
-            # input("KHT")
+            print(search_key_timing, int(timing))
+            input("TIMING")
+            print(kht)
+            input("KHT")
             non_zero_indices = np.nonzero(mask)
             if len(non_zero_indices) > 0:
                 keys_in_pipeline = keys_in_pipeline[non_zero_indices]
             else:
                 keys_in_pipeline = []
-            # print(
-            #     key,
-            #     int(float(search_key_timing)),
-            #     int(float(timing)),
-            #     int(float(search_key_timing)) - int(float(timing)),
-            # )
-            # input("KHT")
+            print(
+                key,
+                int(float(search_key_timing)),
+                int(float(timing)),
+                int(float(search_key_timing)) - int(float(timing)),
+            )
+            input("KHT")
             return keys_in_pipeline, kht
 
     return keys_in_pipeline, None
