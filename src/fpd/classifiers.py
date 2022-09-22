@@ -1,11 +1,9 @@
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn import svm
 from sklearn import metrics
 from sklearn.ensemble import RandomForestClassifier
-from fpd.dataset import (
-    Dataset,
-    TextDataset,
-    get_target_from_df,
+from fpd.dataset import Dataset, TextDataset
+from fpd.dataset_utils import (
     split_into_train_and_test,
 )
 import xgboost as xgb
@@ -17,22 +15,7 @@ from sklearn.preprocessing import LabelEncoder
 def label_encode_platform(array):
     keys = []
     for row in array:
-        print("Platform:", row[0])
-        keys.append(row[0])
-    label_encoder = LabelEncoder()
-    label_encoder = label_encoder.fit(keys)
-    label_encoded_keys = label_encoder.transform(keys)
-    count = 0
-    for row in array:
-        row[0] = label_encoded_keys[count]
-        count += 1
-    return array
-
-
-def label_encode_keys(array):
-    keys = []
-    for row in array:
-        print(row)
+        # print("Platform:", row[1])
         keys.append(row[1])
     label_encoder = LabelEncoder()
     label_encoder = label_encoder.fit(keys)
@@ -40,7 +23,32 @@ def label_encode_keys(array):
     count = 0
     for row in array:
         row[1] = label_encoded_keys[count]
+        # print("Type:", type(row[1]))
         count += 1
+    return array
+
+
+def label_encode_keys(array):
+    keys = []
+    for row in array:
+        # print("Keys:", row[2])
+        keys.append(row[2])
+    label_encoder = LabelEncoder()
+    label_encoder = label_encoder.fit(keys)
+    label_encoded_keys = label_encoder.transform(keys)
+    count = 0
+    for row in array:
+        row[2] = label_encoded_keys[count]
+        # print("Type:", type(row[2]))
+        count += 1
+    return array
+
+
+def convert_id_and_class_to_numeric(array):
+    for row in array:
+        row[0] = int(row[0])
+    for row in array:
+        row[-1] = int(row[-1])
     return array
 
 
@@ -91,37 +99,84 @@ def random_forrest(use_csv: bool = False):
         "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/kit_features.txt"
     )
     df = pd.concat([td.to_df(), td2.to_df()])
-    y = get_target_from_df(df)
-    print(y)
-    input("Stratify")
-    X_train, X_test, y_train, y_test = split_into_train_and_test(df)
-    # 70% training and 30% test
-    print(X_train)
-    input()
-    print(X_test)
-    input()
-    print(y_train)
-    input()
-    print(y_test)
-    input()
+    # print(df.head())
+    # input("Column Names")
+    # 80% training and 20% test
+    X_train, X_test, y_train, y_test = split_into_train_and_test(df, 0.8)
+    # print(X_train.shape)
+    # print(y_train.shape)
+    # input()
+    assert X_train.shape[0] == y_train.shape[0]
+    # Take the 80% portion of the split (X_train and y_train) and split them again by a 70-30 ratio, where the 30% is the validation set
+    X_train, X_validate, y_train, y_validate = split_into_train_and_test(
+        pd.DataFrame(
+            X_train,
+            columns=[
+                "ID",
+                "Platform",
+                "Key(s)",
+                "Medians",
+                "Means",
+                "Modes",
+                "Standard Deviation",
+                "Class",
+            ],
+        )
+    )
+    assert X_train.shape[0] == y_train.shape[0]
     forest = RandomForestClassifier(
         criterion="gini", n_estimators=5, random_state=1, n_jobs=100
     )
+    tuned_parameters = {
+        "max_depth": [5, 10, 15, 20],
+        "n_estimators": [100, 500, 800],
+    }
+    clf = GridSearchCV(
+        forest,
+        tuned_parameters,
+        scoring="neg_mean_absolute_error",
+        return_train_score=True,
+    )
     if use_csv == False:
+        # Should be running against validate x and y sets not the test ones, but the size difference makes it so the classifier won't accept it
+        print(X_train)
+        input("Pre label encode x_train")
         label_encoder_x_train = label_encode_keys(X_train)
         label_encoder_x_train = label_encode_platform(label_encoder_x_train)
+        label_encoder_x_train = convert_id_and_class_to_numeric(label_encoder_x_train)
         print(label_encoder_x_train)
         input("Final Encoded x_train")
-        label_encoder_x_test = label_encode_keys(X_test)
-        print(label_encoder_x_test)
-        input("Partial Encoded x_test")
-        label_encoder_x_test = label_encode_platform(label_encoder_x_test)
-        print(label_encoder_x_test)
-        input("Final Encoded x_test")
-
-        forest.fit(label_encoder_x_train, y_train.ravel())
-        y_pred = forest.predict(label_encoder_x_test)
-        print("Random Forrest Accuracy: %.3f" % metrics.accuracy_score(y_test, y_pred))
+        label_encoder_x_validate = label_encode_keys(X_validate)
+        print(label_encoder_x_validate)
+        input("Partial Encoded x_validate")
+        label_encoder_x_validate = label_encode_platform(label_encoder_x_validate)
+        label_encoder_x_validate = convert_id_and_class_to_numeric(
+            label_encoder_x_validate
+        )
+        print(label_encoder_x_validate)
+        input("Final Encoded x_validate")
+        # Take the id-wise dataframe and use sklearn train-test-split to get the x_test, y_test... etc and combine together
+        # ! use gridsearchcv see xgb_regression_age.py:60+
+        y_train = y_train.ravel()
+        y_train = y_train.astype(np.float)
+        print(y_train)
+        input("Y_Train")
+        clf.fit(label_encoder_x_train, y_train.ravel())
+        y_true, y_pred = np.array(y_test, dtype=float), clf.predict(
+            label_encoder_x_validate
+        )
+        print(y_true)
+        input("Y_true")
+        print(y_pred)
+        input("Y_pred")
+        print("Mean absolute error:", metrics.mean_absolute_error(y_true, y_pred))
+        # print("Best params", clf.best_params_)
+        print("Results", clf.cv_results_)
+        return (
+            metrics.mean_absolute_error(y_true, np.array(y_pred, dtype=float)),
+            clf.best_params_,
+            clf.cv_results_,
+        )
 
 
 def xgb_classifier(use_csv: bool = False):

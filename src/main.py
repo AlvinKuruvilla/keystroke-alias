@@ -11,7 +11,7 @@ from data_processor.aggregator import (
     min_keystroke_count,
     stdev_keystroke_count,
 )
-from fpd.dataset import TextDataset, df_percentage_split
+from fpd.dataset import TextDataset
 from fpd.classifiers import random_forrest, xgb_classifier
 from fpd.feature_gen import make_kht_features_file, make_kit_features_file
 from parser.sentence_parser import SentenceParser
@@ -87,4 +87,7 @@ if __name__ == "__main__":
     # print(td.to_df())
 
     df = pd.concat([td.to_df(), td2.to_df()])
-    random_forrest()
+    res, setup, val = random_forrest()
+    print("RES: ", res)
+    print("SETUP: ", setup)
+    print("VAL: ", val)
