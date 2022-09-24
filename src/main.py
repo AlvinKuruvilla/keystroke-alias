@@ -1,6 +1,5 @@
 import os
 import pickle
-import pandas as pd
 from rich.traceback import install
 from custom.features.kht import get_KHT_features
 
@@ -12,8 +11,7 @@ from data_processor.aggregator import (
     stdev_keystroke_count,
 )
 from fpd.dataset import TextDataset
-from fpd.classifiers import random_forrest, xgb_classifier
-from fpd.feature_gen import make_kht_features_file, make_kit_features_file
+from fpd.classifiers.random_forrest import random_forrest
 from parser.sentence_parser import SentenceParser
 
 install()
@@ -54,15 +52,6 @@ def pickle_features():
         pickle.dump(desktop_kit_features_f4, handle)
 
 
-def run_classifiers(use_csv: bool = False):
-    xgb_classifier(use_csv)
-    # bagged_decision_tree_classifier(use_csv)
-    # adaboost(use_csv)
-    # FIX: NOT WORKING
-    # voting_ensemble(use_csv)
-    # random_forrest(use_csv)
-
-
 if __name__ == "__main__":
     # TODO: Pickle dump the desktop pickle files and add function for advanced word pickle file
     dir_name = "data/"
@@ -72,22 +61,17 @@ if __name__ == "__main__":
     sp = SentenceParser(
         "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/data/km/f_18_fpd1.csv"
     )
-    # print(sp.capital_letters_count_feature())
-    df = pd.read_csv(
-        "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/data/km/f_17_fpd1.csv",
-        header=None,
-    )
+
     td = TextDataset(
         "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/kht_features.txt"
     )
     td2 = TextDataset(
         "/Users/alvinkuruvilla/Dev/keystroke-research/keystroke-alias/kit_features.txt"
     )
-    # get_KHT_features(df.values)
     # print(td.to_df())
 
-    df = pd.concat([td.to_df(), td2.to_df()])
+    # df = pd.concat([td.to_df(), td2.to_df()])
     res, setup, val = random_forrest()
-    print("RES: ", res)
-    print("SETUP: ", setup)
-    print("VAL: ", val)
+    # print("RES: ", res)
+    # print("SETUP: ", setup)
+    # print("VAL: ", val)
