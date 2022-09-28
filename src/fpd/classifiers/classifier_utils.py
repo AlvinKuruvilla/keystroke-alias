@@ -8,13 +8,13 @@ def label_encode_platform(array):
     keys = []
     for row in array:
         # print("Platform:", row[1])
-        keys.append(row[1])
+        keys.append(row[0])
     label_encoder = LabelEncoder()
     label_encoder = label_encoder.fit(keys)
     label_encoded_keys = label_encoder.transform(keys)
     count = 0
     for row in array:
-        row[1] = label_encoded_keys[count]
+        row[0] = label_encoded_keys[count]
         # print("Type:", type(row[1]))
         count += 1
     return array
@@ -24,13 +24,13 @@ def label_encode_keys(array):
     keys = []
     for row in array:
         # print("Keys:", row[2])
-        keys.append(row[2])
+        keys.append(row[1])
     label_encoder = LabelEncoder()
     label_encoder = label_encoder.fit(keys)
     label_encoded_keys = label_encoder.transform(keys)
     count = 0
     for row in array:
-        row[2] = label_encoded_keys[count]
+        row[1] = label_encoded_keys[count]
         # print("Type:", type(row[2]))
         count += 1
     return array

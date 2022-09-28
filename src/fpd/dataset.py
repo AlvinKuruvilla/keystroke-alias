@@ -89,9 +89,7 @@ class TextDataset:
             == classes.size
         )
         return (
-            pd.concat(
-                [ids, platforms, keys, medians, means, modes, stdevs, classes], axis=1
-            )
+            pd.concat([ids, platforms, keys, medians, means, modes, stdevs], axis=1)
             .dropna()
             .reset_index(drop=True)
         )
